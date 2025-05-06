@@ -1,0 +1,44 @@
+[
+    {
+        "title": "Lingolia Español",
+        "group": "Grammar",
+        "description": "Main grammar explanation + exercises.",
+        "link": "https://espanol.lingolia.com/es/"
+    },
+    {
+        "title": "Reverso conjugador",
+        "group": "Grammar",
+        "description": "Check all conjugations for verbs.",
+        "link": "https://conjugador.reverso.net/conjugacion-ingles.html"
+    },
+    {
+        "title": "Profe de Ele",
+        "group": "Grammar",
+        "description": "Good free grammar exercises.",
+        "link": "https://www.profedeele.es/"
+    },
+    {
+        "title": "Diccionario de la lengua española",
+        "group": "Vocabulary",
+        "description": "Spanish academic vocabulary. Has explanations in Spanish, not it English.",
+        "link": "https://dle.rae.es/"
+    },
+    {
+        "title": "TEDx in Spanish",
+        "group": "Youtube Videos",
+        "description": "Tedx show in Spanish about different and interesting topics.",
+        "link": "https://www.youtube.com/playlist?list=PLsRNoUx8w3rPX7BEq2dPj8u1S8kSxOYpk"
+    },
+    {
+        "title": "La casa de Papel",
+        "group": "Netflix",
+        "description": "Money Heist. Very popular tv show in Spanish.",
+        "link": "https://www.google.com/search?q=la+casa+de+papel&oq=la+casa+de+papel&gs_lcrp=EgZjaHJvbWUqBwgAEAAYjwIyBwgAEAAYjwIyCggBEC4YsQMYgAQyBwgCEAAYgAQyBwgDEAAYgAQyBwgEEAAYgAQyCggFEC4Y1AIYgAQyCggGEC4Y1AIYgAQyBwgHEC4YgAQyBwgIEAAYgAQyBwgJEAAYgATSAQg1NTc5ajBqNKgCALACAA&sourceid=chrome&ie=UTF-8"
+    },
+    {
+        "title": "Audio Lingua",
+        "group": "Listening",
+        "description": "Stories narrated by people from diffrent countries in different languages.",
+        "link": "https://audio-lingua.ac-versailles.fr/"
+    }
+]
