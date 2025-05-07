@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
         paddingLeft: 2
     },
     itemDescription: {
+        lineHeight: 20,
         fontSize: 15,
         marginBottom: 8,
         fontWeight: '500',

@@ -5,7 +5,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-import { Fab, FabLabel, FabIcon } from '@/components/ui/fab';
+import { Fab } from '@/components/ui/fab';
 import { Box } from '@/components/ui/box';
 
 export default function TabLayout() {

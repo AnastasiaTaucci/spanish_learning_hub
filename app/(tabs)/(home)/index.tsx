@@ -2,7 +2,7 @@ import { StyleSheet, SafeAreaView, Platform, FlatList } from "react-native";
 import { Heading } from '@/components/ui/heading';
 import { Box } from '@/components/ui/box';
 import { Input, InputField } from '@/components/ui/input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ResourceCard from "@/components/ResourceCard";
 import { useRouter } from "expo-router";
 import { useResourceContext } from "@/context/ResourcesContext";
@@ -15,6 +15,11 @@ export default function Index() {
 
   const [searchText, setSearchText] = useState('');
   const [filteredData, setFilteredData] = useState(resources);
+
+    // Update filteredData whenever resources change
+    useEffect(() => {
+      setFilteredData(resources);
+    }, [resources]);
 
   function handleSearch(searchQuery: string) {
     setSearchText(searchQuery);

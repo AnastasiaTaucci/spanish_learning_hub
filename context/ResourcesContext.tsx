@@ -12,7 +12,6 @@ type ResourceContextType = {
     resources: Resource[];
     addResource: (resource: Resource) => void;
     updateResource: (title: string, updatedResource: Partial<Resource>) => void;
-    toggleFavorite: (title: string) => void;
 }
 
 const ResourceContext =createContext<ResourceContextType | undefined>(undefined);
@@ -32,16 +31,8 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         );
     };
 
-    const toggleFavorite = (title: string) => {
-        setResources((prev) =>
-            prev.map((resources) =>
-                resources.title === title ? { ...resources, isFavorite: !resources.isFavorite } : resources
-            )
-        );
-    };
-
     return (
-        <ResourceContext.Provider value={{ resources, addResource, updateResource, toggleFavorite }}>
+        <ResourceContext.Provider value={{ resources, addResource, updateResource }}>
             {children}
         </ResourceContext.Provider>
     );
