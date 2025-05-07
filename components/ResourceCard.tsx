@@ -7,7 +7,7 @@ type Props = {
   description: string;
   group: string;
   onPress: () => void;
-  remove: () => void;
+  remove?: () => void;
 };
 
 export default function ResourceCard({ title, description, group, onPress, remove }: Props) {
