@@ -23,10 +23,11 @@ export default function AddResource () {
   const router = useRouter();
   
   return (
-    <Box className='flex-1 p-6 mt-16 bg-neutral-100'>
+    <Box className='flex-1 p-6 mt-4 '>
       <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
         <Text style={styles.backText}>← Back</Text>
       </TouchableOpacity>
+      <Text style={styles.title}>Add new Resource</Text>
       <Formik
         initialValues={{
           title: '',
@@ -54,13 +55,12 @@ export default function AddResource () {
         <Box>
           <Box className='mb-4'>
             <Text size='xl' className='mt-2 text-stone-900'>Name</Text>
-            <Input variant='outline' size='md' className='bg-white mt-2'>
+            <Input variant='outline' size='md' className='bg-white mt-2 rounded-md'>
               <InputField 
                   onChangeText={handleChange('title')}
                   onBlur={handleBlur('title')}
                   value={values.title}
                   placeholder='Enter resource name'
-                  style={touched.title && errors.title ? styles.inputFocused : styles.input}
               />
             </ Input>
             {touched.title && errors.title && (
@@ -75,7 +75,6 @@ export default function AddResource () {
                   onBlur={handleBlur('group')}
                   value={values.group}
                   placeholder='Enter group name'
-                  style={touched.title && errors.title ? styles.inputFocused : styles.input}
               />
             </ Input>
             {touched.group && errors.group && (
@@ -90,7 +89,6 @@ export default function AddResource () {
                   onBlur={handleBlur('description')}
                   value={values.description}
                   placeholder='Enter resource name'
-                  style={touched.title && errors.title ? styles.inputFocused : styles.input}
               />
             </ Input>
             {touched.description && errors.description && (
@@ -105,7 +103,6 @@ export default function AddResource () {
                   onBlur={handleBlur('link')}
                   value={values.link}
                   placeholder='Enter resource name'
-                  style={touched.title && errors.title ? styles.inputFocused : styles.input}
               />
             </ Input>
             {touched.link && errors.link && (
@@ -114,7 +111,7 @@ export default function AddResource () {
           </Box>
 
           <TouchableOpacity style={styles.button} onPress={ () => handleSubmit() }>
-            <Text style={styles.buttonText}>Create Resource</Text>
+            <Text style={styles.buttonText}>Add</Text>
           </TouchableOpacity>
         </Box>
       )}  
@@ -124,10 +121,16 @@ export default function AddResource () {
 };
 
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
   backButton: {
     width: 90,
     padding: 8,
-    marginBottom: 10,
+    marginBottom: 30,
     backgroundColor: '#e0e0e0',
     borderRadius: 8,
   },
@@ -135,18 +138,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#333',
     textAlign: 'center',
-  },
-  input: {
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 12,
-    fontSize: 16,
-    backgroundColor: '#fff',
-  },
-  inputFocused: {
-    borderColor: '#0362fc',
-    borderWidth: 2,
   },
   button: {
     width: '65%',
