@@ -23,7 +23,7 @@ export default function AddResource () {
   const router = useRouter();
   
   return (
-    <Box className='flex-1 p-4 mt-16 bg-neutral-100'>
+    <Box className='flex-1 p-6 mt-16 bg-neutral-100'>
       <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
         <Text style={styles.backText}>← Back</Text>
       </TouchableOpacity>
@@ -53,13 +53,14 @@ export default function AddResource () {
       {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
         <Box>
           <Box className='mb-4'>
-            <Text size='lg' className='mb-2 text-stone-900'>Name</Text>
+            <Text size='xl' className='mt-2 text-stone-900'>Name</Text>
             <Input variant='outline' size='md' className='bg-white mt-2'>
               <InputField 
                   onChangeText={handleChange('title')}
                   onBlur={handleBlur('title')}
                   value={values.title}
                   placeholder='Enter resource name'
+                  style={touched.title && errors.title ? styles.inputFocused : styles.input}
               />
             </ Input>
             {touched.title && errors.title && (
@@ -67,13 +68,14 @@ export default function AddResource () {
             )}
           </Box>
           <Box className='mb-4'>
-            <Text size='lg' className='mb-2 text-stone-900'>Group</Text>
+            <Text size='xl' className='mt-2 text-stone-900'>Group</Text>
             <Input variant='outline' size='md' className='bg-white mt-2'>
               <InputField 
                   onChangeText={handleChange('group')}
                   onBlur={handleBlur('group')}
                   value={values.group}
                   placeholder='Enter group name'
+                  style={touched.title && errors.title ? styles.inputFocused : styles.input}
               />
             </ Input>
             {touched.group && errors.group && (
@@ -81,13 +83,14 @@ export default function AddResource () {
             )}
           </Box>
           <Box className='mb-4'>
-            <Text size='lg' className='mb-2 text-stone-900'>Description</Text>
+            <Text size='xl' className='mt-2 text-stone-900'>Description</Text>
             <Input variant='outline' size='md' className='bg-white mt-2'>
               <InputField 
                   onChangeText={handleChange('description')}
                   onBlur={handleBlur('description')}
                   value={values.description}
                   placeholder='Enter resource name'
+                  style={touched.title && errors.title ? styles.inputFocused : styles.input}
               />
             </ Input>
             {touched.description && errors.description && (
@@ -95,13 +98,14 @@ export default function AddResource () {
             )}
           </Box>
           <Box className='mb-4'>
-            <Text size='lg' className='mb-2 text-stone-900'>Link</Text>
+            <Text size='xl' className='mt-2 text-stone-900'>Link</Text>
             <Input variant='outline' size='md' className='bg-white mt-2'>
               <InputField 
                   onChangeText={handleChange('link')}
                   onBlur={handleBlur('link')}
                   value={values.link}
                   placeholder='Enter resource name'
+                  style={touched.title && errors.title ? styles.inputFocused : styles.input}
               />
             </ Input>
             {touched.link && errors.link && (
@@ -128,12 +132,24 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   backText: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#333',
     textAlign: 'center',
   },
+  input: {
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 12,
+    fontSize: 16,
+    backgroundColor: '#fff',
+  },
+  inputFocused: {
+    borderColor: '#0362fc',
+    borderWidth: 2,
+  },
   button: {
-    width: '50%',
+    width: '65%',
     marginHorizontal: 'auto',
     backgroundColor: '#0362fc',
     paddingVertical: 12,
