@@ -1,6 +1,7 @@
 // app/details.tsx
 import { View, Text, StyleSheet, Linking, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useFavoritesContext } from '@/context/FavoritesContext';
 
 export default function DetailsScreen() {
   const router = useRouter();
@@ -10,6 +11,12 @@ export default function DetailsScreen() {
   const description = String(params.description);
   const group = String(params.group);
   const link = String(params.link);
+
+  const { addFavorite } = useFavoritesContext();
+
+  const handleAddToFavorites = () => {
+    addFavorite({ title, description, group, link });
+  };
 
   return (
     <View style={styles.container}>
@@ -22,6 +29,10 @@ export default function DetailsScreen() {
 
       <TouchableOpacity style={styles.button} onPress={() => Linking.openURL(String(link)) }>
         <Text style={styles.buttonText}>Open Resource</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={[styles.button, { backgroundColor: '#ff667d' }]} onPress={ handleAddToFavorites }>
+        <Text style={styles.buttonText}>Add to Favorites</Text>
       </TouchableOpacity>
 
     </View>

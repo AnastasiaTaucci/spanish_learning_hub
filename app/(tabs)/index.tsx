@@ -2,22 +2,24 @@ import { StyleSheet, SafeAreaView, Platform, FlatList } from "react-native";
 import { Heading } from '@/components/ui/heading';
 import { Box } from '@/components/ui/box';
 import { Input, InputField } from '@/components/ui/input';
-import spanishLinks from '@/data/spanish_links.json'
 import { useState } from 'react';
-import ResourceCard from "@/components/ResourseCard";
+import ResourceCard from "@/components/ResourceCard";
 import { useRouter } from "expo-router";
+import { useResourceContext } from "@/context/ResourcesContext";
 
 export default function Index() {
   const router = useRouter();
   const Container = Platform.OS === 'web' ? Box : SafeAreaView;
 
+  const { resources } = useResourceContext();
+
   const [searchText, setSearchText] = useState('');
-  const [filteredData, setFilteredData] = useState(spanishLinks);
+  const [filteredData, setFilteredData] = useState(resources);
 
   function handleSearch(searchQuery: string) {
     setSearchText(searchQuery);
 
-    const results = spanishLinks.filter(item => 
+    const results = resources.filter(item => 
       item.title.toLowerCase().includes(searchText.toLowerCase()) ||
       item.group.toLowerCase().includes(searchText.toLowerCase()) ||
       item.description.toLowerCase().includes(searchText.toLowerCase())
