@@ -4,7 +4,7 @@
     "slug": "spanish_learn_hub",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "@/assets/images/icon.png",
+    "icon": "./assets/images/icon.png",
     "scheme": "spanishlearnhub",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
