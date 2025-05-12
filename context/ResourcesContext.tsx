@@ -1,5 +1,5 @@
-import { createContext, useState, useContext } from "react";
-import spanishLinks from '@/data/spanish_links.json'
+import useGetResources from "@/hooks/useGetResources";
+import { createContext, useState, useContext, useEffect } from "react";
 
 export type Resource = {
     title: string;
@@ -9,6 +9,7 @@ export type Resource = {
 }
 
 type ResourceContextType = {
+    isLoading: boolean;
     resources: Resource[];
     addResource: (resource: Resource) => void;
     updateResource: (title: string, updatedResource: Partial<Resource>) => void;
@@ -17,7 +18,8 @@ type ResourceContextType = {
 const ResourceContext =createContext<ResourceContextType | undefined>(undefined);
 
 export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [resources, setResources] = useState<Resource[]>(spanishLinks as Resource[]);
+    const {data, isFetching} = useGetResources();
+    const [resources, setResources] = useState<Resource[]>();
 
     const addResource = (resource: Resource) => {
         setResources((prev) => [...prev, resource]);
@@ -31,8 +33,18 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         );
     };
 
+    useEffect(() => {
+        if (data && !isFetching) {
+            console.log("Fetched data: ", data);
+            setResources(data as Resource[]);
+        } 
+        if (isFetching) {
+            console.log("Fetching data...");
+        }
+    }, [data, isFetching])
+
     return (
-        <ResourceContext.Provider value={{ resources, addResource, updateResource }}>
+        <ResourceContext.Provider value={{ isLoading:isFetching, resources, addResource, updateResource }}>
             {children}
         </ResourceContext.Provider>
     );
