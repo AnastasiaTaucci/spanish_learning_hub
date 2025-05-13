@@ -4,19 +4,15 @@ import { supabase } from "@/utils/supabase";
 // useQueryClient: gives access to React Query’s cache so you can update or refresh it after a mutation.
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-// Utilitze the Omit utility type to create a new type that excludes the 'id' property, because supabase controls them by itself
-// https://www.geeksforgeeks.org/typescript-omittype-keys-utility-type/
-// Supabase Restaurant TypeMatch
-export type SupabaseNewResource = Omit<Resource, 'id'>;
-
-export function useAddResource() {
+export default function useDeleteResource() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (newResource: SupabaseNewResource) => {
+        mutationFn: async (resourceId: Resource['id']) => {
             const { data, error } = await supabase
                 .from("resources")
-                .insert(newResource);
+                .delete()
+                .eq('id', resourceId);
             if (error) {
                 throw new Error(error.message)
             }
@@ -26,9 +22,6 @@ export function useAddResource() {
             // You tell React Query: "Refresh the cached data for 'resources'".
             // This makes your app show the latest list (with the new resource added).
             queryClient.invalidateQueries({ queryKey: ['resources']})
-        },
-        onError: (error) => {
-            console.error("Failed to add resource:", error.message);
-          }
+        }
     })
 }

@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity, Text, Pressable, View } from 'react-native';
 import { Card } from '@/components/ui/card';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 type Props = {
   title: string;
@@ -17,7 +17,7 @@ export default function ResourceCard({ title, description, group, onPress, remov
         <Text style={styles.itemTitle}>{title}</Text>
         {remove &&
             <Pressable onPress={remove} hitSlop={10}>
-            <MaterialCommunityIcons name="delete-circle-outline" size={26} color="#e63946" />
+                <FontAwesome5 name="heart-broken" size={26} color="#c20622" />
             </Pressable>
         }
         </View>

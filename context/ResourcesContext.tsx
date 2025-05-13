@@ -1,4 +1,6 @@
+import { useAddResource, SupabaseNewResource} from "@/hooks/useAddResource";
 import useGetResources from "@/hooks/useGetResources";
+import useDeleteResource from "@/hooks/useDeleteResource";
 import { createContext, useState, useContext, useEffect } from "react";
 
 export type Resource = {
@@ -6,12 +8,14 @@ export type Resource = {
     group: string;
     description: string;
     link: string;
+    id: string;
 }
 
 type ResourceContextType = {
     isLoading: boolean;
     resources: Resource[];
-    addResource: (resource: Resource) => void;
+    addResource: (resource: SupabaseNewResource) => void;
+    deleteResource: (id: string) => void;
     updateResource: (title: string, updatedResource: Partial<Resource>) => void;
 }
 
@@ -19,10 +23,16 @@ const ResourceContext =createContext<ResourceContextType | undefined>(undefined)
 
 export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const {data, isFetching} = useGetResources();
+    const addResourceMutation = useAddResource();
+    const deleteResourceMutation = useDeleteResource();    
     const [resources, setResources] = useState<Resource[]>();
 
-    const addResource = (resource: Resource) => {
-        setResources((prev) => [...prev, resource]);
+    const addResource = async (resource: SupabaseNewResource) => {
+        addResourceMutation.mutate(resource);
+    };
+
+    const deleteResource = async (id: string,) => {
+        deleteResourceMutation.mutate(id)
     };
 
     const updateResource = (title: string, updatedResources: Partial<Resource>) => {
@@ -44,7 +54,7 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }, [data, isFetching])
 
     return (
-        <ResourceContext.Provider value={{ isLoading:isFetching, resources, addResource, updateResource }}>
+        <ResourceContext.Provider value={{ isLoading:isFetching, resources, addResource, deleteResource, updateResource }}>
             {children}
         </ResourceContext.Provider>
     );
