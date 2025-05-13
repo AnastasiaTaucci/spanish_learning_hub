@@ -1,7 +1,8 @@
-import { useAddResource, SupabaseNewResource} from "@/hooks/useAddResource";
-import useGetResources from "@/hooks/useGetResources";
+import { SupabaseNewResource, useAddResource } from "@/hooks/useAddResource";
 import useDeleteResource from "@/hooks/useDeleteResource";
-import { createContext, useState, useContext, useEffect } from "react";
+import useGetResources from "@/hooks/useGetResources";
+import useUpdateResource from "@/hooks/useUpdateResource";
+import { createContext, useContext, useEffect, useState } from "react";
 
 export type Resource = {
     title: string;
@@ -16,7 +17,7 @@ type ResourceContextType = {
     resources: Resource[];
     addResource: (resource: SupabaseNewResource) => void;
     deleteResource: (id: string) => void;
-    updateResource: (title: string, updatedResource: Partial<Resource>) => void;
+    updateResource: (updatedResource: Resource) => void;
 }
 
 const ResourceContext =createContext<ResourceContextType | undefined>(undefined);
@@ -25,6 +26,7 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const {data, isFetching} = useGetResources();
     const addResourceMutation = useAddResource();
     const deleteResourceMutation = useDeleteResource();    
+    const updateResourceMutation = useUpdateResource();    
     const [resources, setResources] = useState<Resource[]>();
 
     const addResource = async (resource: SupabaseNewResource) => {
@@ -35,12 +37,8 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         deleteResourceMutation.mutate(id)
     };
 
-    const updateResource = (title: string, updatedResources: Partial<Resource>) => {
-        setResources((prev) =>
-            prev.map((resources) =>
-                resources.title === title ? { ...resources, ...updatedResources } : resources
-            )
-        );
+    const updateResource = (updatedResource: Resource) => {
+        updateResourceMutation.mutate(updatedResource);
     };
 
     useEffect(() => {

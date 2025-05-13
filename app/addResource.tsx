@@ -1,6 +1,6 @@
 import { TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
-import { useNavigation, useRouter } from 'expo-router'
+import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router'
 import * as Yup from 'yup';
 import {Formik} from 'formik';
 import { useResourceContext } from '@/context/ResourcesContext';
@@ -19,31 +19,53 @@ const ResourceSchema = Yup.object().shape({
 
 export default function AddResource () {
   const navigation = useNavigation();
-  const { addResource } = useResourceContext();
+  const { addResource, updateResource } = useResourceContext();
   const router = useRouter();
+
+  // if coming from details page to edit
+  const params = useLocalSearchParams();
+  const title = String(params.title);
+  const description = String(params.description);
+  const group = String(params.group);
+  const link = String(params.link);
+  const id = String(params.id);
+  const isEditing = !!id;     // !!params.id -> a JavaScript trick to convert a value to a boolean.
   
   return (
     <Box className='flex-1 p-6 mt-4 '>
       <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
         <Text style={styles.backText}>← Back</Text>
       </TouchableOpacity>
-      <Text style={styles.title}>Add new Resource</Text>
+      <Text style={styles.title}>
+        {isEditing? "Edit Resource" : "Add new Resource"}
+      </Text>
       <Formik
         initialValues={{
-          title: '',
-          group: '',
-          description: '',
-          link: '',
+          title: title || '',
+          group: group || '',
+          description: description || '',
+          link: link || '',
         }}
         validationSchema={ResourceSchema}
         onSubmit={(values, {resetForm}) => {
+          // if editing, just update resource. Otherwise, add new
+          if (isEditing) {
+            updateResource({
+              id,
+              title: values.title,
+              group: values.group,
+              description: values.description,
+              link: values.link,
+            });
+          } else {
           // Add the restaurant to the context
-          addResource({
-            title: values.title,
-            group: values.group,
-            description: values.description,
-            link: values.link,
-          });
+            addResource({
+              title: values.title,
+              group: values.group,
+              description: values.description,
+              link: values.link,
+            });
+          }
 
           // Reset the form
           resetForm();
@@ -111,7 +133,9 @@ export default function AddResource () {
           </Box>
 
           <TouchableOpacity style={styles.button} onPress={ () => handleSubmit() }>
-            <Text style={styles.buttonText}>Add</Text>
+            <Text style={styles.buttonText}>
+              {isEditing? "Save" : "Add"}
+            </Text>
           </TouchableOpacity>
         </Box>
       )}  

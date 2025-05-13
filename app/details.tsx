@@ -10,19 +10,23 @@ export default function DetailsScreen() {
   const router = useRouter();
 
   const params = useLocalSearchParams();
-  const title = String(params.title);
-  const description = String(params.description);
-  const group = String(params.group);
-  const link = String(params.link);
   const id = String(params.id);
 
   const { addFavorite } = useFavoritesContext();
-  const { deleteResource } = useResourceContext();
+  const { resources, deleteResource } = useResourceContext();
+
+  const resource = resources.find((item) => item.id === id) // resource might be undefined if there is no match
   
 
   const handleAddToFavorites = () => {
-    addFavorite({ title, description, group, link });
+    addFavorite({ 
+      title: resource?.title || "", 
+      description: resource?.description || "", 
+      group: resource?.group || "", 
+      link: resource?.link || "" 
+    });
   };
+
 
   const handleDeleteResource = () => {
     deleteResource(id);
@@ -31,14 +35,28 @@ export default function DetailsScreen() {
     router.back();
   };
 
+  const handleEditResource = () => {
+    // Navigate to the edit screen with the restaurant id
+    router.push({
+      pathname: '/addResource',
+      params: { 
+        id,
+        title: resource?.title || "", 
+        description: resource?.description || "", 
+        group: resource?.group || "", 
+        link: resource?.link || ""
+       },
+    })
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
         <Text style={styles.backText}>← Back</Text>
       </TouchableOpacity>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.group}>Group: {group}</Text>
-      <Text style={styles.description}>{description}</Text>
+      <Text style={styles.title}>{resource?.title}</Text>
+      <Text style={styles.group}>Group: {resource?.group}</Text>
+      <Text style={styles.description}>{resource?.description}</Text>
 
       <TouchableOpacity style={[styles.button, styles.openButton]} onPress={() => Linking.openURL(String(link)) }>
         <Text style={[styles.buttonText, styles.openButtonText]}>Open Resource</Text>
@@ -56,7 +74,7 @@ export default function DetailsScreen() {
       <Button 
         style={[styles.button, { backgroundColor: 'grey' }]}
         action="positive"
-        onPress={ handleAddToFavorites }
+        onPress={ handleEditResource }
       >
         <ButtonIcon as={EditIcon}/>
         <ButtonText>Edit</ButtonText>
