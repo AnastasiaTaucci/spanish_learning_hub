@@ -2,10 +2,16 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { useFavoritesContext } from '@/context/FavoritesContext';
 import ResourceCard from '@/components/ResourceCard';
 import { useRouter } from 'expo-router';
+import { useResourceContext } from '@/context/ResourcesContext';
 
 export default function FavoritesScreen() {
-  const { favorites, removeFavorite } = useFavoritesContext();
   const router = useRouter();
+
+  const { resources } = useResourceContext();
+  const { favorites, removeFavorite } = useFavoritesContext();
+
+  const favoriteResources = resources.filter(resource => favorites.includes(resource.id));
+  
 
   return (
     <View style={styles.container}>
@@ -16,14 +22,14 @@ export default function FavoritesScreen() {
       ) : (
         <FlatList
         style={{ paddingTop: 10,}}
-          data={favorites}
-          keyExtractor={(item) => item.title}
+          data={favoriteResources}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <ResourceCard
               title={item.title}
               group={item.group}
               description={item.description}
-              remove={() => removeFavorite(item.title)}
+              remove={() => removeFavorite(item.id)}
               onPress={() =>
                 router.push({
                   pathname: '/details',

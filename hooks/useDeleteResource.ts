@@ -9,14 +9,13 @@ export default function useDeleteResource() {
 
     return useMutation({
         mutationFn: async (resourceId: Resource['id']) => {
-            const { data, error } = await supabase
+            const { error } = await supabase
                 .from("resources")
                 .delete()
                 .eq('id', resourceId);
             if (error) {
                 throw new Error(error.message)
             }
-            return data
         },
         onSuccess: () => {
             // You tell React Query: "Refresh the cached data for 'resources'".

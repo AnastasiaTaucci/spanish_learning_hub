@@ -24,12 +24,7 @@ export default function DetailsScreen() {
       return;
     }
 
-    addFavorite({ 
-      title: resource.title, 
-      description: resource.description, 
-      group: resource.group, 
-      link: resource.link,
-    });
+    addFavorite(resource.id);
   };
 
 

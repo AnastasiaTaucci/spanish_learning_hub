@@ -14,13 +14,12 @@ export function useAddResource() {
 
     return useMutation({
         mutationFn: async (newResource: SupabaseNewResource) => {
-            const { data, error } = await supabase
+            const { error } = await supabase
                 .from("resources")
                 .insert(newResource);
             if (error) {
                 throw new Error(error.message)
             }
-            return data
         },
         onSuccess: () => {
             // You tell React Query: "Refresh the cached data for 'resources'".
