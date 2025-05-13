@@ -3,10 +3,10 @@ import React from 'react'
 import { useNavigation, useRouter } from 'expo-router'
 import * as Yup from 'yup';
 import {Formik} from 'formik';
-import { useResourceContext } from '@/context/ResourcesContext';
 import { Box } from '@/components/ui/box';
 import { Input, InputField } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
+import useAddResource from '@/hooks/useAddResource';
 
 
 
@@ -19,7 +19,7 @@ const ResourceSchema = Yup.object().shape({
 
 export default function AddResource () {
   const navigation = useNavigation();
-  const { addResource } = useResourceContext();
+  const { mutate } = useAddResource();
   const router = useRouter();
   
   return (
@@ -38,7 +38,7 @@ export default function AddResource () {
         validationSchema={ResourceSchema}
         onSubmit={(values, {resetForm}) => {
           // Add the restaurant to the context
-          addResource({
+          mutate({
             title: values.title,
             group: values.group,
             description: values.description,
