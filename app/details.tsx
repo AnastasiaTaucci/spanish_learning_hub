@@ -19,11 +19,16 @@ export default function DetailsScreen() {
   
 
   const handleAddToFavorites = () => {
+    if (!resource) {
+      console.warn("Tried to favorite a resource that wasn't loaded");
+      return;
+    }
+
     addFavorite({ 
-      title: resource?.title || "", 
-      description: resource?.description || "", 
-      group: resource?.group || "", 
-      link: resource?.link || "" 
+      title: resource.title, 
+      description: resource.description, 
+      group: resource.group, 
+      link: resource.link,
     });
   };
 
@@ -41,10 +46,6 @@ export default function DetailsScreen() {
       pathname: '/addResource',
       params: { 
         id,
-        title: resource?.title || "", 
-        description: resource?.description || "", 
-        group: resource?.group || "", 
-        link: resource?.link || ""
        },
     })
   };

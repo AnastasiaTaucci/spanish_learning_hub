@@ -19,18 +19,17 @@ const ResourceSchema = Yup.object().shape({
 
 export default function AddResource () {
   const navigation = useNavigation();
-  const { addResource, updateResource } = useResourceContext();
+  const { addResource, updateResource, resources } = useResourceContext();
   const router = useRouter();
 
   // if coming from details page to edit
   const params = useLocalSearchParams();
-  const title = String(params.title);
-  const description = String(params.description);
-  const group = String(params.group);
-  const link = String(params.link);
-  const id = String(params.id);
-  const isEditing = !!id;     // !!params.id -> a JavaScript trick to convert a value to a boolean.
   
+  const id = typeof params.id === "string" ? params.id : undefined;
+  const isEditing = !!id;     // !!params.id -> a JavaScript trick to convert a value to a boolean.
+
+  const resource = resources.find((item) => item.id === id) // resource might be undefined if there is no match
+
   return (
     <Box className='flex-1 p-6 mt-4 '>
       <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
@@ -41,10 +40,10 @@ export default function AddResource () {
       </Text>
       <Formik
         initialValues={{
-          title: title || '',
-          group: group || '',
-          description: description || '',
-          link: link || '',
+          title: resource?.title || "", 
+          description: resource?.description || "", 
+          group: resource?.group || "", 
+          link: resource?.link || "" 
         }}
         validationSchema={ResourceSchema}
         onSubmit={(values, {resetForm}) => {
@@ -149,6 +148,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+    paddingTop: 12,
     textAlign: 'center',
   },
   backButton: {
