@@ -33,7 +33,7 @@ export default function ResourceCard({ title, description, group, onPress, remov
 const styles = StyleSheet.create({
     stepContainer: {
         backgroundColor: '#ffffff',
-        padding: 16,
+        marginHorizontal: 12,
         marginVertical: 8,
         borderRadius: 12,
         shadowColor: '#000',

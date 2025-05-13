@@ -1,4 +1,4 @@
-import { TouchableOpacity, StyleSheet } from 'react-native'
+import { TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
 import React from 'react'
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router'
 import * as Yup from 'yup';
@@ -31,115 +31,122 @@ export default function AddResource () {
   const resource = resources.find((item) => item.id === id) // resource might be undefined if there is no match
 
   return (
-    <Box className='flex-1 p-6 mt-4 '>
-      <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-        <Text style={styles.backText}>← Back</Text>
-      </TouchableOpacity>
-      <Text style={styles.title}>
-        {isEditing? "Edit Resource" : "Add new Resource"}
-      </Text>
-      <Formik
-        initialValues={{
-          title: resource?.title || "", 
-          description: resource?.description || "", 
-          group: resource?.group || "", 
-          link: resource?.link || "" 
-        }}
-        validationSchema={ResourceSchema}
-        onSubmit={(values, {resetForm}) => {
-          // if editing, just update resource. Otherwise, add new
-          if (isEditing) {
-            updateResource({
-              id,
-              title: values.title,
-              group: values.group,
-              description: values.description,
-              link: values.link,
-            });
-          } else {
-          // Add the restaurant to the context
-            addResource({
-              title: values.title,
-              group: values.group,
-              description: values.description,
-              link: values.link,
-            });
-          }
-
-          // Reset the form
-          resetForm();
-          // Navigate back to the previous screen
-          navigation.goBack();
-        }}
-      >
-      {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 14, marginTop: 36 }}>
         <Box>
-          <Box className='mb-4'>
-            <Text size='xl' className='mt-2 text-stone-900'>Name</Text>
-            <Input variant='outline' size='md' className='bg-white mt-2 rounded-md'>
-              <InputField 
-                  onChangeText={handleChange('title')}
-                  onBlur={handleBlur('title')}
-                  value={values.title}
-                  placeholder='Enter resource name'
-              />
-            </ Input>
-            {touched.title && errors.title && (
-              <Text size='sm' className='text-red-500 mt-1'>{errors.title}</Text>
-            )}
-          </Box>
-          <Box className='mb-4'>
-            <Text size='xl' className='mt-2 text-stone-900'>Group</Text>
-            <Input variant='outline' size='md' className='bg-white mt-2'>
-              <InputField 
-                  onChangeText={handleChange('group')}
-                  onBlur={handleBlur('group')}
-                  value={values.group}
-                  placeholder='Enter group name'
-              />
-            </ Input>
-            {touched.group && errors.group && (
-              <Text size='sm' className='text-red-500 mt-1'>{errors.group}</Text>
-            )}
-          </Box>
-          <Box className='mb-4'>
-            <Text size='xl' className='mt-2 text-stone-900'>Description</Text>
-            <Input variant='outline' size='md' className='bg-white mt-2'>
-              <InputField 
-                  onChangeText={handleChange('description')}
-                  onBlur={handleBlur('description')}
-                  value={values.description}
-                  placeholder='Enter resource name'
-              />
-            </ Input>
-            {touched.description && errors.description && (
-              <Text size='sm' className='text-red-500 mt-1'>{errors.description}</Text>
-            )}
-          </Box>
-          <Box className='mb-4'>
-            <Text size='xl' className='mt-2 text-stone-900'>Link</Text>
-            <Input variant='outline' size='md' className='bg-white mt-2'>
-              <InputField 
-                  onChangeText={handleChange('link')}
-                  onBlur={handleBlur('link')}
-                  value={values.link}
-                  placeholder='Enter resource name'
-              />
-            </ Input>
-            {touched.link && errors.link && (
-              <Text size='sm' className='text-red-500 mt-1'>{errors.link}</Text>
-            )}
-          </Box>
-
-          <TouchableOpacity style={styles.button} onPress={ () => handleSubmit() }>
-            <Text style={styles.buttonText}>
-              {isEditing? "Save" : "Add"}
-            </Text>
+          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+            <Text style={styles.backText}>← Back</Text>
           </TouchableOpacity>
+          <Text style={styles.title}>
+            {isEditing? "Edit Resource" : "Add new Resource"}
+          </Text>
+          <Formik
+            initialValues={{
+              title: resource?.title || "", 
+              description: resource?.description || "", 
+              group: resource?.group || "", 
+              link: resource?.link || "" 
+            }}
+            validationSchema={ResourceSchema}
+            onSubmit={(values, {resetForm}) => {
+              // if editing, just update resource. Otherwise, add new
+              if (isEditing) {
+                updateResource({
+                  id,
+                  title: values.title,
+                  group: values.group,
+                  description: values.description,
+                  link: values.link,
+                });
+              } else {
+              // Add the restaurant to the context
+                addResource({
+                  title: values.title,
+                  group: values.group,
+                  description: values.description,
+                  link: values.link,
+                });
+              }
+
+              // Reset the form
+              resetForm();
+              // Navigate back to the previous screen
+              navigation.goBack();
+            }}
+          >
+          {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
+            <Box>
+              <Box className='mb-4'>
+                <Text size='xl' className='mt-2 text-stone-900'>Name</Text>
+                <Input variant='outline' size='md' className='bg-white mt-2 rounded-md'>
+                  <InputField 
+                      onChangeText={handleChange('title')}
+                      onBlur={handleBlur('title')}
+                      value={values.title}
+                      placeholder='Enter resource name'
+                  />
+                </ Input>
+                {touched.title && errors.title && (
+                  <Text size='sm' className='text-red-500 mt-1'>{errors.title}</Text>
+                )}
+              </Box>
+              <Box className='mb-4'>
+                <Text size='xl' className='mt-2 text-stone-900'>Group</Text>
+                <Input variant='outline' size='md' className='bg-white mt-2'>
+                  <InputField 
+                      onChangeText={handleChange('group')}
+                      onBlur={handleBlur('group')}
+                      value={values.group}
+                      placeholder='Enter group name'
+                  />
+                </ Input>
+                {touched.group && errors.group && (
+                  <Text size='sm' className='text-red-500 mt-1'>{errors.group}</Text>
+                )}
+              </Box>
+              <Box className='mb-4'>
+                <Text size='xl' className='mt-2 text-stone-900'>Description</Text>
+                <Input variant='outline' size='md' className='bg-white mt-2'>
+                  <InputField 
+                      onChangeText={handleChange('description')}
+                      onBlur={handleBlur('description')}
+                      value={values.description}
+                      placeholder='Enter resource name'
+                  />
+                </ Input>
+                {touched.description && errors.description && (
+                  <Text size='sm' className='text-red-500 mt-1'>{errors.description}</Text>
+                )}
+              </Box>
+              <Box className='mb-4'>
+                <Text size='xl' className='mt-2 text-stone-900'>Link</Text>
+                <Input variant='outline' size='md' className='bg-white mt-2'>
+                  <InputField 
+                      onChangeText={handleChange('link')}
+                      onBlur={handleBlur('link')}
+                      value={values.link}
+                      placeholder='Enter resource name'
+                  />
+                </ Input>
+                {touched.link && errors.link && (
+                  <Text size='sm' className='text-red-500 mt-1'>{errors.link}</Text>
+                )}
+              </Box>
+
+              <TouchableOpacity style={styles.button} onPress={ () => handleSubmit() }>
+                <Text style={styles.buttonText}>
+                  {isEditing? "Save" : "Add"}
+                </Text>
+              </TouchableOpacity>
+            </Box>
+          )}  
+          </Formik>
         </Box>
-      )}  
-      </Formik>
-    </Box>
+      </ScrollView>
+    </KeyboardAvoidingView>
   )
 };
 

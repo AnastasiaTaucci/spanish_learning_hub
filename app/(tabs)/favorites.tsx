@@ -15,6 +15,7 @@ export default function FavoritesScreen() {
         <Text style={styles.message}>No favorites yet. Add some from the details page!</Text>
       ) : (
         <FlatList
+        style={{ paddingTop: 10,}}
           data={favorites}
           keyExtractor={(item) => item.title}
           renderItem={({ item }) => (
@@ -40,7 +41,6 @@ export default function FavoritesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
     paddingTop: 50,
     backgroundColor: '#f9f9f9',
   },
