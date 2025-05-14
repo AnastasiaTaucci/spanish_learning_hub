@@ -28,7 +28,7 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const addResourceMutation = useAddResource();
     const deleteResourceMutation = useDeleteResource();    
     const updateResourceMutation = useUpdateResource();    
-    const [resources, setResources] = useState<Resource[]>();
+    const [resources, setResources] = useState<Resource[]>([]);
 
     const addResource = async (resource: SupabaseNewResource) => {
         addResourceMutation.mutate(resource);
@@ -46,7 +46,7 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const jsonValue = await AsyncStorage.getItem("Resources");
+                const jsonValue = await AsyncStorage.getItem("RecentResources");
                 const storageResources = jsonValue != null ? JSON.parse(jsonValue) : null;
 
                 if (storageResources && storageResources.length) {
@@ -73,8 +73,9 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
             // save the fresh data to the local storage
             try{
-                const jsonValue = JSON.stringify(data)
-                AsyncStorage.setItem("Resources", jsonValue)
+                const lastFive = data.slice(-5);
+                const jsonValue = JSON.stringify(lastFive);
+                AsyncStorage.setItem("RecentResources", jsonValue)
             } catch (error) {
                 console.error("Failed to cache resources", error)
             }

@@ -1,6 +1,7 @@
 import { createContext, useContext, ReactNode, useEffect, useState } from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAddFavorite, useGetFavorites, useRemoveFavorite } from '@/hooks/useFavorites';
+import { useResourceContext } from '@/context/ResourcesContext'
 
 type FavoritesContextType = {
   favorites: string[];
@@ -11,6 +12,7 @@ type FavoritesContextType = {
 const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
 
 export function FavoritesProvider({ children }: { children: ReactNode }) {
+  const { resources } = useResourceContext();
   const [favorites, setFavorites] = useState<string[]>([]);
   //object destructuring - take the data field from the object returned by useGetFavorites(), rename it to favorites, and if it's undefined, set it to an empty array
   const { data, isFetching } = useGetFavorites();
@@ -41,21 +43,23 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
   // once fresh data is available from Supabase, update state and AsyncStorage
   useEffect(() => {
-    if (data && !isFetching) {
+    if (data && !isFetching && resources) {
       // update state with fresh data
       console.log("Favorites are succesfully fetched.");
       setFavorites(data as string[]);
 
+      const fullFavorites = resources.filter(resource => data.includes(resource.id));
+
       // cache the fresh data
       try{
-        const jsonValue = JSON.stringify(data)
+        const jsonValue = JSON.stringify(fullFavorites);
         AsyncStorage.setItem("Favorites", jsonValue)
       } catch (e) {
         console.error(e);
       }
     }
 
-  }, [data, isFetching])
+  }, [data, isFetching, resources])
 
   
   // functions to update supabase when a favorite is deleted or added

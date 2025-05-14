@@ -45,16 +45,16 @@ export default function RootLayout() {
     <PaperProvider>
       <QueryClientProvider client={queryClient}>
         <GluestackUIProvider mode="light">
-          <FavoritesProvider>
-            <ResourceProvider>
+          <ResourceProvider>
+            <FavoritesProvider>
               <Stack>
                 <Stack.Screen name="(tabs)" options={{ headerShown: false}} />
                 <Stack.Screen name="details" options={{ headerShown: false}} />
                 <Stack.Screen name="addResource" options={{ headerShown: false}} />
                 <Stack.Screen name="+not-found"  />
               </Stack>
-            </ResourceProvider>
-          </FavoritesProvider>
+            </FavoritesProvider>
+          </ResourceProvider>
         </GluestackUIProvider>
       </QueryClientProvider>
     </PaperProvider>

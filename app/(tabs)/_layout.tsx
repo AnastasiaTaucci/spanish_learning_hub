@@ -37,6 +37,7 @@ export default function TabLayout() {
         size='lg'
         className='bottom-32 dark:bg-zinc-700'
         onPress={() => router.navigate('/addResource')}
+        hitSlop={25}
       >
         <FabIcon as={AddIcon} color="white"/>
       </Fab>
