@@ -42,7 +42,7 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         updateResourceMutation.mutate(updatedResource);
     };
 
-    // load saved data on initial load
+    // load saved resources from AsyncStorage on app launch
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -61,12 +61,13 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         fetchData();
     }, [])
 
-    // Save fresh Supabase data and update state
+    // once fresh data is available from Supabase, update state and AsyncStorage
     useEffect(() => {
         if (data && !isFetching) {
-            // console.log("Fetched data: ", data);
-            console.log("Data is succesfully fetched.");
+            // console.log("Fetched resources: ", data);
+
             // first we update state with fresh data
+            console.log("Resources are succesfully fetched.");
             setResources(data as Resource[]);
 
 
@@ -79,7 +80,7 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             }
         } 
         if (isFetching) {
-            console.log("Fetching data...");
+            console.log("Fetching resources...");
         }
     }, [data, isFetching])
 
