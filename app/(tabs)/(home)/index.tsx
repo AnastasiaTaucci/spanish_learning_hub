@@ -1,17 +1,17 @@
-import { StyleSheet, SafeAreaView, Platform, FlatList } from "react-native";
+import { StyleSheet, FlatList, View } from "react-native";
 import { Heading } from '@/components/ui/heading';
-import { Box } from '@/components/ui/box';
 import { Input, InputField } from '@/components/ui/input';
 import { useEffect, useState } from 'react';
 import ResourceCard from "@/components/ResourceCard";
 import { useRouter } from "expo-router";
 import { useResourceContext } from "@/context/ResourcesContext";
+import { useFavoritesContext } from "@/context/FavoritesContext";
 
 export default function Index() {
   const router = useRouter();
-  const Container = Platform.OS === 'web' ? Box : SafeAreaView;
 
   const { resources } = useResourceContext();
+  const { favorites, addFavorite, removeFavorite } = useFavoritesContext();
 
   const [searchText, setSearchText] = useState('');
   const [filteredData, setFilteredData] = useState(resources);
@@ -33,7 +33,7 @@ export default function Index() {
   }
 
   return (
-    <Container style={styles.container}>
+    <View style={styles.container}>
 
       <Heading style={styles.homeTitle} size='2xl'>
         Spanish Learning Hub
@@ -50,32 +50,42 @@ export default function Index() {
       </Input>
 
       <FlatList
-        style={{ marginTop: 15}}
+        style={{ paddingTop: 10,}}
         data={filteredData}
         keyExtractor={(item) => item.title}
-        renderItem={({item}) => (
-          <ResourceCard
-            title={item.title}
-            group={item.group}
-            description={item.description}
-            onPress={() =>
-              router.push({
-                pathname: '/details',
-                params: item,
-              })
-            }
-          />
-        )}
+        renderItem={({item}) => { 
+          const isFavorite = favorites.includes(item.id);
+
+          return (
+            <ResourceCard
+              title={item.title}
+              group={item.group}
+              description={item.description}
+              onPress={() =>
+                router.push({
+                  pathname: '/details',
+                  params: item,
+                })
+              }
+              isFavorite={isFavorite}
+              onToggleFavorite={() => {
+                if (isFavorite) {
+                  removeFavorite(item.id)
+                } else {
+                  addFavorite(item.id)
+                }
+              }}
+            />
+          )}}
       />
 
-    </Container>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
     paddingTop: 50,
     backgroundColor: '#f9f9f9',
   },
@@ -89,5 +99,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     backgroundColor: '#fff',
+    marginHorizontal: 10,
   },
 });

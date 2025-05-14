@@ -1,24 +1,25 @@
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { createContext, useContext, ReactNode, useEffect, useState } from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-type Favorite = {
-  title: string;
-  description: string;
-  group: string;
-  link: string;
-};
+import { useAddFavorite, useGetFavorites, useRemoveFavorite } from '@/hooks/useFavorites';
 
 type FavoritesContextType = {
-  favorites: Favorite[];
-  addFavorite: (item: Favorite) => void;
-  removeFavorite: (title: string) => void;
+  favorites: string[];
+  addFavorite: (resourceId: string) => void;
+  removeFavorite: (resourceId: string) => void;
 };
 
 const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
 
 export function FavoritesProvider({ children }: { children: ReactNode }) {
-  const [favorites, setFavorites] = useState<Favorite[]>([]);
+  const [favorites, setFavorites] = useState<string[]>([]);
+  //object destructuring - take the data field from the object returned by useGetFavorites(), rename it to favorites, and if it's undefined, set it to an empty array
+  const { data, isFetching } = useGetFavorites();
 
+
+  const addFavoriteMutation = useAddFavorite();
+  const removeFavoriteMutation = useRemoveFavorite();
+
+  // load cached favorites from AsyncStorage on app launch
   useEffect(() => {
     const fetchData = async() => {
       try {
@@ -38,25 +39,32 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     fetchData();
   }, []);
 
+  // once fresh data is available from Supabase, update state and AsyncStorage
   useEffect(() => {
-    const storeData = async () => {
+    if (data && !isFetching) {
+      // update state with fresh data
+      console.log("Favorites are succesfully fetched.");
+      setFavorites(data as string[]);
+
+      // cache the fresh data
       try{
-        const jsonValue = JSON.stringify(favorites)
-        await AsyncStorage.setItem("Favorites", jsonValue)
+        const jsonValue = JSON.stringify(data)
+        AsyncStorage.setItem("Favorites", jsonValue)
       } catch (e) {
         console.error(e);
       }
     }
 
-    storeData()
-  }, [favorites])
+  }, [data, isFetching])
 
-  function addFavorite(item: Favorite) {
-    setFavorites((prev) => [...prev, item]);
+  
+  // functions to update supabase when a favorite is deleted or added
+  function addFavorite(resourceId: string) {
+    addFavoriteMutation.mutate(resourceId);
   }
 
-  function removeFavorite(title: string) {
-    setFavorites((prev) => prev.filter((item) => item.title !== title));
+  function removeFavorite(resourceId: string) {
+    removeFavoriteMutation.mutate(resourceId);
   }
 
   return (

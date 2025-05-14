@@ -1,21 +1,36 @@
 // app/details.tsx
 import { View, Text, StyleSheet, Linking, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useFavoritesContext } from '@/context/FavoritesContext';
+import { useResourceContext } from '@/context/ResourcesContext';
+import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
+import { EditIcon, TrashIcon } from '@/components/ui/icon';
 
 export default function DetailsScreen() {
   const router = useRouter();
 
   const params = useLocalSearchParams();
-  const title = String(params.title);
-  const description = String(params.description);
-  const group = String(params.group);
-  const link = String(params.link);
+  const id = String(params.id);
 
-  const { addFavorite } = useFavoritesContext();
+  const { resources, deleteResource } = useResourceContext();
 
-  const handleAddToFavorites = () => {
-    addFavorite({ title, description, group, link });
+  const resource = resources.find((item) => item.id === id) // resource might be undefined if there is no match
+
+
+  const handleDeleteResource = () => {
+    deleteResource(id);
+
+    // Navigate back to the previous screen
+    router.back();
+  };
+
+  const handleEditResource = () => {
+    // Navigate to the edit screen with the restaurant id
+    router.push({
+      pathname: '/addResource',
+      params: { 
+        id,
+       },
+    })
   };
 
   return (
@@ -23,17 +38,31 @@ export default function DetailsScreen() {
       <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
         <Text style={styles.backText}>← Back</Text>
       </TouchableOpacity>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.group}>Group: {group}</Text>
-      <Text style={styles.description}>{description}</Text>
+      <Text style={styles.title}>{resource?.title}</Text>
+      <Text style={styles.group}>Category: {resource?.group}</Text>
+      <Text style={styles.description}>{resource?.description}</Text>
 
-      <TouchableOpacity style={styles.button} onPress={() => Linking.openURL(String(link)) }>
-        <Text style={styles.buttonText}>Open Resource</Text>
+      <TouchableOpacity style={[styles.button, styles.openButton]} onPress={() => Linking.openURL(String(link)) }>
+        <Text style={[styles.buttonText, styles.openButtonText]}>Open Resource</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={[styles.button, { backgroundColor: '#ff667d' }]} onPress={ handleAddToFavorites }>
-        <Text style={styles.buttonText}>Add to Favorites</Text>
-      </TouchableOpacity>
+      <Button 
+        style={[styles.button, { backgroundColor: 'grey' }]}
+        action="positive"
+        onPress={ handleEditResource }
+      >
+        <ButtonIcon as={EditIcon}/>
+        <ButtonText>Edit</ButtonText>
+      </Button>
+
+      <Button 
+        style={[styles.button, { backgroundColor: '#c20622' }]}
+        action="positive"
+        onPress={ handleDeleteResource }
+      >
+        <ButtonIcon as={TrashIcon}/>
+        <ButtonText>Delete</ButtonText>
+      </Button>
 
     </View>
   );
@@ -47,18 +76,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
   },
   title: {
-    fontSize: 26,
+    fontSize: 30,
     fontWeight: 'bold',
-    marginBottom: 12,
-    color: '#222',
+    marginBottom: 8,
+    color: '#0362fc',
   },
   group: {
-    fontSize: 18,
-    marginBottom: 8,
-    color: '#555',
+    fontSize: 16,
+    marginBottom: 12,
+    color: '#888',
   },
   description: {
-    fontSize: 16,
+    fontSize: 18,
     marginBottom: 20,
     color: '#333',
   },
@@ -76,7 +105,19 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   button: {
-    width: '65%',
+    width: '40%',
+    marginHorizontal: 'auto',
+    borderRadius: 8,
+    marginTop: 12,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  openButton: {
+    width: '75%',
+    marginBottom: 30,
     marginHorizontal: 'auto',
     backgroundColor: '#0362fc',
     paddingVertical: 12,
@@ -85,9 +126,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
     alignItems: 'center',
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
+  openButtonText: {
+    fontSize: 20,
   }
 });

@@ -3,10 +3,10 @@ import React from 'react';
 
 import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-import { Fab } from '@/components/ui/fab';
+import { Fab, FabIcon } from '@/components/ui/fab';
 import { Box } from '@/components/ui/box';
+import { AddIcon } from '@/components/ui/icon';
 
 export default function TabLayout() {
   const router = useRouter();
@@ -38,7 +38,7 @@ export default function TabLayout() {
         className='bottom-32 dark:bg-zinc-700'
         onPress={() => router.navigate('/addResource')}
       >
-        <FontAwesome name="edit" size={24} color="white" />
+        <FabIcon as={AddIcon} color="white"/>
       </Fab>
     </Box>
   );

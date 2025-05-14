@@ -2,10 +2,16 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { useFavoritesContext } from '@/context/FavoritesContext';
 import ResourceCard from '@/components/ResourceCard';
 import { useRouter } from 'expo-router';
+import { useResourceContext } from '@/context/ResourcesContext';
 
 export default function FavoritesScreen() {
-  const { favorites, removeFavorite } = useFavoritesContext();
   const router = useRouter();
+
+  const { resources } = useResourceContext();
+  const { favorites, removeFavorite } = useFavoritesContext();
+
+  const favoriteResources = resources.filter(resource => favorites.includes(resource.id));
+  
 
   return (
     <View style={styles.container}>
@@ -15,14 +21,15 @@ export default function FavoritesScreen() {
         <Text style={styles.message}>No favorites yet. Add some from the details page!</Text>
       ) : (
         <FlatList
-          data={favorites}
-          keyExtractor={(item) => item.title}
+        style={{ paddingTop: 10,}}
+          data={favoriteResources}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <ResourceCard
               title={item.title}
               group={item.group}
               description={item.description}
-              remove={() => removeFavorite(item.title)}
+              remove={() => removeFavorite(item.id)}
               onPress={() =>
                 router.push({
                   pathname: '/details',
@@ -40,7 +47,6 @@ export default function FavoritesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
     paddingTop: 50,
     backgroundColor: '#f9f9f9',
   },
