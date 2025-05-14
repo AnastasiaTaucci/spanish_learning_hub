@@ -5,11 +5,13 @@ import { useEffect, useState } from 'react';
 import ResourceCard from "@/components/ResourceCard";
 import { useRouter } from "expo-router";
 import { useResourceContext } from "@/context/ResourcesContext";
+import { useFavoritesContext } from "@/context/FavoritesContext";
 
 export default function Index() {
   const router = useRouter();
 
   const { resources } = useResourceContext();
+  const { favorites, addFavorite, removeFavorite } = useFavoritesContext();
 
   const [searchText, setSearchText] = useState('');
   const [filteredData, setFilteredData] = useState(resources);
@@ -51,19 +53,30 @@ export default function Index() {
         style={{ paddingTop: 10,}}
         data={filteredData}
         keyExtractor={(item) => item.title}
-        renderItem={({item}) => (
-          <ResourceCard
-            title={item.title}
-            group={item.group}
-            description={item.description}
-            onPress={() =>
-              router.push({
-                pathname: '/details',
-                params: item,
-              })
-            }
-          />
-        )}
+        renderItem={({item}) => { 
+          const isFavorite = favorites.includes(item.id);
+
+          return (
+            <ResourceCard
+              title={item.title}
+              group={item.group}
+              description={item.description}
+              onPress={() =>
+                router.push({
+                  pathname: '/details',
+                  params: item,
+                })
+              }
+              isFavorite={isFavorite}
+              onToggleFavorite={() => {
+                if (isFavorite) {
+                  removeFavorite(item.id)
+                } else {
+                  addFavorite(item.id)
+                }
+              }}
+            />
+          )}}
       />
 
     </View>

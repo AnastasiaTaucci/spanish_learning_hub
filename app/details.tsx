@@ -1,10 +1,9 @@
 // app/details.tsx
 import { View, Text, StyleSheet, Linking, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useFavoritesContext } from '@/context/FavoritesContext';
 import { useResourceContext } from '@/context/ResourcesContext';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
-import { EditIcon, FavouriteIcon, TrashIcon } from '@/components/ui/icon';
+import { EditIcon, TrashIcon } from '@/components/ui/icon';
 
 export default function DetailsScreen() {
   const router = useRouter();
@@ -12,20 +11,9 @@ export default function DetailsScreen() {
   const params = useLocalSearchParams();
   const id = String(params.id);
 
-  const { addFavorite } = useFavoritesContext();
   const { resources, deleteResource } = useResourceContext();
 
   const resource = resources.find((item) => item.id === id) // resource might be undefined if there is no match
-  
-
-  const handleAddToFavorites = () => {
-    if (!resource) {
-      console.warn("Tried to favorite a resource that wasn't loaded");
-      return;
-    }
-
-    addFavorite(resource.id);
-  };
 
 
   const handleDeleteResource = () => {
@@ -57,15 +45,6 @@ export default function DetailsScreen() {
       <TouchableOpacity style={[styles.button, styles.openButton]} onPress={() => Linking.openURL(String(link)) }>
         <Text style={[styles.buttonText, styles.openButtonText]}>Open Resource</Text>
       </TouchableOpacity>
-
-      <Button 
-        style={[styles.button, { backgroundColor: '#ff667d' }]}
-        action="positive"
-        onPress={ handleAddToFavorites }
-      >
-        <ButtonIcon as={FavouriteIcon} />
-        <ButtonText>Add to Favorites</ButtonText>
-      </Button>
 
       <Button 
         style={[styles.button, { backgroundColor: 'grey' }]}
