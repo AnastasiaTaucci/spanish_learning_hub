@@ -13,9 +13,13 @@ const categories = ["Grammar", "Vocabulary", "Listening", "Reading", "Youtube Ch
 
 
 const ResourceSchema = Yup.object().shape({
-  title: Yup.string().required("Title is required"),
-  group: Yup.string().required("Please assign group"),
-  description: Yup.string().required("Please provide short description"),
+  title: Yup.string()
+    .required("Title is required")
+    .max(60, "Title must be at most 60 characters"),
+  group: Yup.string().required("Please assign category"),
+  description: Yup.string()
+    .required("Please provide short description")
+    .max(160, "Description must be at most 160 characters"),
   link: Yup.string().url().required("Resource link is required")
 });
 
@@ -83,7 +87,7 @@ export default function AddResource () {
           {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
             <Box>
               <Box className='mb-4'>
-                <Text size='xl' className='mt-2 text-stone-900'>Name</Text>
+                <Text size='xl' className='mt-2 text-stone-900'>Title</Text>
                 <Input variant='outline' size='md' className='bg-white mt-2 rounded-md'>
                   <InputField 
                       onChangeText={handleChange('title')}
