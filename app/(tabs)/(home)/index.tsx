@@ -1,11 +1,12 @@
 import { StyleSheet, FlatList, View } from "react-native";
 import { Heading } from '@/components/ui/heading';
-import { Input, InputField } from '@/components/ui/input';
+import { Input, InputField, InputIcon } from '@/components/ui/input';
 import { useEffect, useState } from 'react';
 import ResourceCard from "@/components/ResourceCard";
 import { useRouter } from "expo-router";
 import { useResourceContext } from "@/context/ResourcesContext";
 import { useFavoritesContext } from "@/context/FavoritesContext";
+import { SearchIcon } from "@/components/ui/icon";
 
 export default function Index() {
   const router = useRouter();
@@ -42,6 +43,7 @@ export default function Index() {
       <Input
         style={styles.input}
       >
+        <InputIcon as={SearchIcon} />
         <InputField 
           placeholder='Search resources...'
           value = {searchText}
@@ -100,5 +102,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#fff',
     marginHorizontal: 10,
+    paddingLeft: 10,
   },
 });

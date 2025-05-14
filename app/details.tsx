@@ -42,7 +42,7 @@ export default function DetailsScreen() {
       <Text style={styles.group}>Category: {resource?.group}</Text>
       <Text style={styles.description}>{resource?.description}</Text>
 
-      <TouchableOpacity style={[styles.button, styles.openButton]} onPress={() => Linking.openURL(String(link)) }>
+      <TouchableOpacity style={[styles.button, styles.openButton]} onPress={() => Linking.openURL(String(resource?.link)) }>
         <Text style={[styles.buttonText, styles.openButtonText]}>Open Resource</Text>
       </TouchableOpacity>
 

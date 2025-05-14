@@ -1,5 +1,5 @@
 import { TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router'
 import * as Yup from 'yup';
 import {Formik} from 'formik';
@@ -7,7 +7,9 @@ import { useResourceContext } from '@/context/ResourcesContext';
 import { Box } from '@/components/ui/box';
 import { Input, InputField } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
+import { Menu, Button } from 'react-native-paper';
 
+const categories = ["Grammar", "Vocabulary", "Listening", "Reading", "Youtube Channel", "Padcast", "Netflix" ];
 
 
 const ResourceSchema = Yup.object().shape({
@@ -21,6 +23,7 @@ export default function AddResource () {
   const navigation = useNavigation();
   const { addResource, updateResource, resources } = useResourceContext();
   const router = useRouter();
+  const [menuVisible, setMenuVisible] = useState(false);
 
   // if coming from details page to edit
   const params = useLocalSearchParams();
@@ -94,22 +97,39 @@ export default function AddResource () {
                 )}
               </Box>
               <Box className='mb-4'>
-                <Text size='xl' className='mt-2 text-stone-900'>Group</Text>
-                <Input variant='outline' size='md' className='bg-white mt-2'>
-                  <InputField 
-                      onChangeText={handleChange('group')}
-                      onBlur={handleBlur('group')}
-                      value={values.group}
-                      placeholder='Enter group name'
-                  />
-                </ Input>
+                <Text size='xl' className='mt-2 text-stone-900'>Category</Text>
+                <Menu
+                  visible={menuVisible}
+                  onDismiss={() => setMenuVisible(false)}
+                  anchor={
+                    <Button 
+                      mode="outlined" 
+                      onPress={() => setMenuVisible(true)} 
+                      style={styles.category}    
+                      labelStyle={[styles.categoryLabel, {color: values.group ? '#000' : '#888',}]}                  
+                    >
+                      {values.group || "Select Category"}
+                    </Button>
+                  }
+                >
+                  {categories.map((label) => (
+                    <Menu.Item
+                      key={label}
+                      onPress={() => {
+                        handleChange("group")(label);
+                        setMenuVisible(false);
+                      }}
+                      title={label}
+                    />
+                  ))}
+                </Menu>
                 {touched.group && errors.group && (
                   <Text size='sm' className='text-red-500 mt-1'>{errors.group}</Text>
                 )}
               </Box>
               <Box className='mb-4'>
                 <Text size='xl' className='mt-2 text-stone-900'>Description</Text>
-                <Input variant='outline' size='md' className='bg-white mt-2'>
+                <Input variant='outline' size='md' className='bg-white mt-2 text-left'>
                   <InputField 
                       onChangeText={handleChange('description')}
                       onBlur={handleBlur('description')}
@@ -169,6 +189,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#333',
     textAlign: 'center',
+  },
+  category: {
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    marginTop: 8,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    justifyContent: 'flex-start',
+  },
+  categoryLabel: {
+    fontSize: 13,
+    marginVertical: 6,
+    textAlign: 'left',
+    width: '95%',
   },
   button: {
     width: '65%',

@@ -2,6 +2,7 @@ import { Stack } from "expo-router";
 import { FavoritesProvider } from "@/context/FavoritesContext";
 import { ResourceProvider } from "@/context/ResourcesContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Provider as PaperProvider } from 'react-native-paper';
 
 
 import "@/global.css";
@@ -41,19 +42,21 @@ export default function RootLayout() {
   }, [isAuthenticated])
   
   return (
-    <QueryClientProvider client={queryClient}>
-      <GluestackUIProvider mode="light">
-        <FavoritesProvider>
-          <ResourceProvider>
-            <Stack>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false}} />
-              <Stack.Screen name="details" options={{ headerShown: false}} />
-              <Stack.Screen name="addResource" options={{ headerShown: false}} />
-              <Stack.Screen name="+not-found"  />
-            </Stack>
-          </ResourceProvider>
-        </FavoritesProvider>
-      </GluestackUIProvider>
-    </QueryClientProvider>
+    <PaperProvider>
+      <QueryClientProvider client={queryClient}>
+        <GluestackUIProvider mode="light">
+          <FavoritesProvider>
+            <ResourceProvider>
+              <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false}} />
+                <Stack.Screen name="details" options={{ headerShown: false}} />
+                <Stack.Screen name="addResource" options={{ headerShown: false}} />
+                <Stack.Screen name="+not-found"  />
+              </Stack>
+            </ResourceProvider>
+          </FavoritesProvider>
+        </GluestackUIProvider>
+      </QueryClientProvider>
+    </PaperProvider>
   );
 }
