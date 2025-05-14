@@ -109,7 +109,7 @@ Row-level security (RLS) is enabled. Policies are currently permissive for devel
 
 ## 📦 AsyncStorage is used for offline support:
 
-- Cached resources and favorites are saved locally on the device
+- A limited set of resources (e.g., the last 5 added) and full favorite items are cached locally using AsyncStorage.
 
 - On app startup, cached data is loaded first for instant display
 
