@@ -39,7 +39,7 @@ export default function DetailsScreen() {
         <Text style={styles.backText}>← Back</Text>
       </TouchableOpacity>
       <Text style={styles.title}>{resource?.title}</Text>
-      <Text style={styles.group}>Group: {resource?.group}</Text>
+      <Text style={styles.group}>Category: {resource?.group}</Text>
       <Text style={styles.description}>{resource?.description}</Text>
 
       <TouchableOpacity style={[styles.button, styles.openButton]} onPress={() => Linking.openURL(String(link)) }>
@@ -76,15 +76,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
   },
   title: {
-    fontSize: 28,
+    fontSize: 30,
     fontWeight: 'bold',
-    marginBottom: 12,
-    color: '#222',
+    marginBottom: 8,
+    color: '#0362fc',
   },
   group: {
-    fontSize: 20,
-    marginBottom: 8,
-    color: '#555',
+    fontSize: 16,
+    marginBottom: 12,
+    color: '#888',
   },
   description: {
     fontSize: 18,
@@ -105,9 +105,8 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   button: {
-    width: '65%',
+    width: '40%',
     marginHorizontal: 'auto',
-    // paddingHorizontal: 'auto',
     borderRadius: 8,
     marginTop: 12,
   },
