@@ -1,50 +1,128 @@
-# Welcome to your Expo app 👋
+# Spanish Learning Hub 📚🇪🇸
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Overview  
+Spanish Learning Hub is a full-stack mobile app built with React Native (Expo), designed to help users track and manage learning resources such as grammar guides, vocabulary tools, YouTube channels, and more.
 
-## Get started
+This project was developed as part of a mobile app development course to practice building cross-platform apps with React Native, including fundamentals like routing, component design, data handling, and backend integration using Supabase, React Query, and AsyncStorage.
 
-1. Install dependencies
+## 🔧 Tech Stack
+- React Native + Expo Router (mobile app & navigation)
+
+- Supabase (cloud database and authentication)
+
+- React Query (data fetching & caching)
+
+- AsyncStorage (local storage for offline access)
+
+- Formik + Yup (form validation)
+
+- Gluestack UI – for consistent component styling in parts of the UI
+
+## ✨ Features
+
+- Browse learning resources (stored in Supabase)
+
+- Add, edit, and delete custom resources
+
+- Mark favorites with a heart icon toggle
+
+- Filter/search resources by keyword
+
+- Offline caching using AsyncStorage
+
+- Mobile-optimized, cross-platform layout
+
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+- Node.js
+
+- Expo CLI
+
+🔐 A Supabase account is not required to run this project.
+The app uses a public Supabase project and test user credentials embedded in the code for demo purposes.
+You can optionally create your own Supabase account and replace the keys and login credentials (in RootLayout) if you prefer a private setup.
+
+
+## Installation
+
+1. Clone the repo:
+
+   ```bash
+   git clone https://github.com/AnastasiaTaucci/spanish_learning_hub.git
+   cd spanish-learn-hub
+
+2. Install dependencies:
 
    ```bash
    npm install
-   ```
 
-2. Start the app
+3. Start the Expo app:
 
    ```bash
    npx expo start
-   ```
+   
+## 🛠 Supabase Configuration & Table Setup
 
-In the output, you'll find options to open the app in a
+A single test user is automatically signed in on app launch (test@example.com). Supabase is used as the cloud backend to store resources and favorites.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Tables
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+#### 1. `resources`
 
-## Get a fresh project
+| Column       | Type           | Description            |
+|--------------|----------------|------------------------|
+| `id`         | UUID (PK)      | Unique resource ID     |
+| `title`      | Text           | Resource title         |
+| `group`      | Text           | Category or group name |
+| `description`| Text           | Brief description      |
+| `link`       | Text           | Resource link          |
 
-When you're ready, run:
+---
 
-```bash
-npm run reset-project
-```
+#### 2. `favorites`
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+| Column        | Type           | Description                              |
+|---------------|----------------|------------------------------------------|
+| `id`          | UUID (PK)      | Unique favorite record ID                |
+| `resource_id` | UUID (FK)      | References `resources.id` (the resource) |
 
-## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
+#### RLS Policies
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Row-level security (RLS) is enabled. Policies are currently permissive for development and testing purposes: USING (true)
 
-## Join the community
+## ⚙️ React Query is used to:
 
-Join our community of developers creating universal apps.
+- Fetch resource and favorite data from Supabase
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Handle loading and error states automatically
+
+- Invalidate and refetch data on add, edit, or delete
+
+- Provide optimistic UI updates when managing favorites
+
+
+## 📦 AsyncStorage is used for offline support:
+
+- Cached resources and favorites are saved locally on the device
+
+- On app startup, cached data is loaded first for instant display
+
+- When new data is fetched from Supabase, it overwrites the cache
+
+This makes the app usable even without a network connection.
+
+
+## 📁 Project Structure Highlights
+
+   ```bash
+   /app              → App routes & screens
+   /context          → Favorites and Resources context providers
+   /hooks            → Custom React Query hooks
+   /components       → Shared UI components (cards, inputs, icons)
+
