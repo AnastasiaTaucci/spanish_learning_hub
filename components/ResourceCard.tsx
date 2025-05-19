@@ -1,7 +1,7 @@
-import { StyleSheet, TouchableOpacity, Text, Pressable, View } from 'react-native';
 import { Card } from '@/components/ui/card';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 type Props = {
   title: string;
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     stepContainer: {
         backgroundColor: '#ffffff',
         marginHorizontal: 12,
-        marginVertical: 8,
+        marginBottom: 8,
         borderRadius: 12,
         shadowColor: '#000',
         shadowOpacity: 0.15,
