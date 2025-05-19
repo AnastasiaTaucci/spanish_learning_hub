@@ -1,8 +1,8 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import { useFavoritesContext } from '@/context/FavoritesContext';
-import ResourceCard from '@/components/ResourceCard';
-import { useRouter } from 'expo-router';
-import { useResourceContext } from '@/context/ResourcesContext';
+import { View, Text, FlatList, StyleSheet } from "react-native";
+import { useFavoritesContext } from "@/context/FavoritesContext";
+import ResourceCard from "@/components/ResourceCard";
+import { useRouter } from "expo-router";
+import { useResourceContext } from "@/context/ResourcesContext";
 
 export default function FavoritesScreen() {
   const router = useRouter();
@@ -10,18 +10,21 @@ export default function FavoritesScreen() {
   const { resources } = useResourceContext();
   const { favorites, removeFavorite } = useFavoritesContext();
 
-  const favoriteResources = resources.filter(resource => favorites.includes(resource.id));
-  
+  const favoriteResources = resources.filter((resource) =>
+    favorites.includes(resource.id),
+  );
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Favorite Resources</Text>
 
       {favorites.length === 0 ? (
-        <Text style={styles.message}>No favorites yet. Add some from the details page!</Text>
+        <Text style={styles.message}>
+          No favorites yet. Add some from the details page!
+        </Text>
       ) : (
         <FlatList
-        style={{ paddingTop: 10,}}
+          style={{ paddingTop: 10 }}
           data={favoriteResources}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
@@ -32,7 +35,7 @@ export default function FavoritesScreen() {
               remove={() => removeFavorite(item.id)}
               onPress={() =>
                 router.push({
-                  pathname: '/details',
+                  pathname: "/details",
                   params: item,
                 })
               }
@@ -48,22 +51,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 50,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: "#f9f9f9",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 16,
-    textAlign: 'center',
+    textAlign: "center",
   },
   message: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 16,
-    color: '#666',
+    color: "#666",
     marginTop: 40,
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 16,
     borderRadius: 10,
     marginBottom: 16,
@@ -71,17 +74,17 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#0362fc',
+    fontWeight: "bold",
+    color: "#0362fc",
     marginBottom: 4,
   },
   cardGroup: {
     fontSize: 14,
-    color: '#777',
+    color: "#777",
     marginBottom: 4,
   },
   cardDescription: {
     fontSize: 16,
-    color: '#333',
+    color: "#333",
   },
 });

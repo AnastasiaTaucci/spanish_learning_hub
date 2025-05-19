@@ -2,8 +2,7 @@ import { Stack } from "expo-router";
 import { FavoritesProvider } from "@/context/FavoritesContext";
 import { ResourceProvider } from "@/context/ResourcesContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Provider as PaperProvider } from 'react-native-paper';
-
+import { Provider as PaperProvider } from "react-native-paper";
 
 import "@/global.css";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
@@ -18,8 +17,8 @@ export default function RootLayout() {
   // handle initial supabase authentication
   //Right now, your app is using a test user. So, instead of showing a login form, you sign them in automatically when the app opens.
   // This useEffect runs once when the app starts. Supabase stores the session (because you set it up with AsyncStorage in supabase.ts)
-  useEffect(()=> {
-    async function autoSignin () {
+  useEffect(() => {
+    async function autoSignin() {
       if (isAuthenticated) {
         console.log("User is already authenticated, skipping sign-in.");
         return;
@@ -27,11 +26,11 @@ export default function RootLayout() {
 
       const { data, error } = await supabase.auth.signInWithPassword({
         email: "test@example.com",
-        password: "12345678aA!"
-      }) 
+        password: "12345678aA!",
+      });
 
       if (error) {
-        console.error("Error signing in: ", error.message)
+        console.error("Error signing in: ", error.message);
       } else {
         setIsAuthenticated(true);
         console.log("Signed in user: ", data);
@@ -39,8 +38,8 @@ export default function RootLayout() {
     }
 
     autoSignin();
-  }, [isAuthenticated])
-  
+  }, [isAuthenticated]);
+
   return (
     <PaperProvider>
       <QueryClientProvider client={queryClient}>
@@ -48,10 +47,13 @@ export default function RootLayout() {
           <ResourceProvider>
             <FavoritesProvider>
               <Stack>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false}} />
-                <Stack.Screen name="details" options={{ headerShown: false}} />
-                <Stack.Screen name="addResource" options={{ headerShown: false}} />
-                <Stack.Screen name="+not-found"  />
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="details" options={{ headerShown: false }} />
+                <Stack.Screen
+                  name="addResource"
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen name="+not-found" />
               </Stack>
             </FavoritesProvider>
           </ResourceProvider>
