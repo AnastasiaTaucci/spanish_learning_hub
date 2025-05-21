@@ -58,6 +58,9 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
         console.error(e);
       }
     }
+    if (isFetching) {
+      console.log("Fetching favorites...");
+    }
 
   }, [data, isFetching, resources])
 

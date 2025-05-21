@@ -13,7 +13,8 @@ export function useGetFavorites() {
                 throw new Error(error.message)
             }
             return data.map(item => item.resource_id);    
-        }
+        },
+        staleTime: 1000 * 60 *5, // cache data for 5 minutes
     })
 }
 
