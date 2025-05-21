@@ -7,27 +7,25 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 // Utilitze the Omit utility type to create a new type that excludes the 'id' property, because supabase controls them by itself
 // https://www.geeksforgeeks.org/typescript-omittype-keys-utility-type/
 // Supabase Restaurant TypeMatch
-export type SupabaseNewResource = Omit<Resource, 'id'>;
+export type SupabaseNewResource = Omit<Resource, "id">;
 
 export function useAddResource() {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: async (newResource: SupabaseNewResource) => {
-            const { error } = await supabase
-                .from("resources")
-                .insert(newResource);
-            if (error) {
-                throw new Error(error.message)
-            }
-        },
-        onSuccess: () => {
-            // You tell React Query: "Refresh the cached data for 'resources'".
-            // This makes your app show the latest list (with the new resource added).
-            queryClient.invalidateQueries({ queryKey: ['resources']})
-        },
-        onError: (error) => {
-            console.error("Failed to add resource:", error.message);
-          }
-    })
+  return useMutation({
+    mutationFn: async (newResource: SupabaseNewResource) => {
+      const { error } = await supabase.from("resources").insert(newResource);
+      if (error) {
+        throw new Error(error.message);
+      }
+    },
+    onSuccess: () => {
+      // You tell React Query: "Refresh the cached data for 'resources'".
+      // This makes your app show the latest list (with the new resource added).
+      queryClient.invalidateQueries({ queryKey: ["resources"] });
+    },
+    onError: (error) => {
+      console.error("Failed to add resource:", error.message);
+    },
+  });
 }
