@@ -18,7 +18,12 @@ module.exports = defineConfig([
       prettier: require("eslint-plugin-prettier"),
     },
     rules: {
-      "prettier/prettier": "error",
+      "prettier/prettier": [
+        "error",
+        {
+          endOfLine: "auto",
+        },
+      ],
       "import/no-unresolved": "off",
       semi: ["error", "always"],
       quotes: ["error", "double"],

@@ -1,4 +1,10 @@
-import { StyleSheet, FlatList, View } from "react-native";
+import {
+  StyleSheet,
+  FlatList,
+  View,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { Heading } from "@/components/ui/heading";
 import { Input, InputField, InputIcon } from "@/components/ui/input";
 import { useEffect, useState } from "react";
@@ -8,7 +14,7 @@ import { useResourceContext } from "@/context/ResourcesContext";
 import { useFavoritesContext } from "@/context/FavoritesContext";
 import { SearchIcon } from "@/components/ui/icon";
 
-export default function Index() {
+export default function HomeScreen() {
   const router = useRouter();
 
   const { resources } = useResourceContext();
@@ -35,51 +41,56 @@ export default function Index() {
   }
 
   return (
-    <View style={styles.container}>
-      <Heading style={styles.homeTitle} size="2xl">
-        Spanish Learning Hub
-      </Heading>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <View style={styles.container}>
+        <Heading style={styles.homeTitle} size="2xl">
+          Spanish Learning Hub
+        </Heading>
 
-      <Input style={styles.input}>
-        <InputIcon as={SearchIcon} />
-        <InputField
-          placeholder="Search resources..."
-          value={searchText}
-          onChangeText={handleSearch}
-        />
-      </Input>
+        <Input style={styles.input}>
+          <InputIcon as={SearchIcon} />
+          <InputField
+            placeholder="Search resources..."
+            value={searchText}
+            onChangeText={handleSearch}
+          />
+        </Input>
 
-      <FlatList
-        style={{ paddingTop: 10 }}
-        data={filteredData}
-        keyExtractor={(item) => item.title}
-        renderItem={({ item }) => {
-          const isFavorite = favorites.includes(item.id);
+        <FlatList
+          style={{ paddingTop: 10 }}
+          data={filteredData}
+          keyExtractor={(item) => item.title}
+          renderItem={({ item }) => {
+            const isFavorite = favorites.includes(item.id);
 
-          return (
-            <ResourceCard
-              title={item.title}
-              group={item.group}
-              description={item.description}
-              onPress={() =>
-                router.push({
-                  pathname: "/details",
-                  params: item,
-                })
-              }
-              isFavorite={isFavorite}
-              onToggleFavorite={() => {
-                if (isFavorite) {
-                  removeFavorite(item.id);
-                } else {
-                  addFavorite(item.id);
+            return (
+              <ResourceCard
+                title={item.title}
+                group={item.group}
+                description={item.description}
+                onPress={() =>
+                  router.push({
+                    pathname: "/details",
+                    params: item,
+                  })
                 }
-              }}
-            />
-          );
-        }}
-      />
-    </View>
+                isFavorite={isFavorite}
+                onToggleFavorite={() => {
+                  if (isFavorite) {
+                    removeFavorite(item.id);
+                  } else {
+                    addFavorite(item.id);
+                  }
+                }}
+              />
+            );
+          }}
+        />
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 
