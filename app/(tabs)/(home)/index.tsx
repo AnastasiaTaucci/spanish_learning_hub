@@ -1,18 +1,18 @@
+import ResourceCard from "@/components/ResourceCard";
+import { Heading } from "@/components/ui/heading";
+import { SearchIcon } from "@/components/ui/icon";
+import { Input, InputField, InputIcon } from "@/components/ui/input";
+import { useFavoritesContext } from "@/context/FavoritesContext";
+import { useResourceContext } from "@/context/ResourcesContext";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import {
-  StyleSheet,
   FlatList,
-  View,
   KeyboardAvoidingView,
   Platform,
+  StyleSheet,
+  View,
 } from "react-native";
-import { Heading } from "@/components/ui/heading";
-import { Input, InputField, InputIcon } from "@/components/ui/input";
-import { useEffect, useState } from "react";
-import ResourceCard from "@/components/ResourceCard";
-import { useRouter } from "expo-router";
-import { useResourceContext } from "@/context/ResourcesContext";
-import { useFavoritesContext } from "@/context/FavoritesContext";
-import { SearchIcon } from "@/components/ui/icon";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -33,9 +33,9 @@ export default function HomeScreen() {
 
     const results = resources.filter(
       (item) =>
-        item.title.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.group.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchText.toLowerCase()),
+        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.group.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchQuery.toLowerCase()),
     );
     setFilteredData(results);
   }

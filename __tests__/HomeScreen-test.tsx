@@ -1,59 +1,61 @@
 import HomeScreen from "@/app/(tabs)/(home)";
-import { FavoritesProvider } from "@/context/FavoritesContext";
-import { ResourceProvider } from "@/context/ResourcesContext";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import mockData from "../data/spanish_links.json";
 
-// Mock the useGetResources hook
-jest.mock("@/hooks/useGetResources", () => ({
-  __esModule: true, //tells Jest you're mocking an ES module with a default export.
-  default: () => ({
-    data: mockData,
-    isFetching: false,
-  }),
+// Mock useResourceContext instead of using ResourceProvider
+jest.mock("@/context/ResourcesContext", () => ({
+  useResourceContext: jest.fn(() => ({
+    resources: mockData,
+  })),
 }));
 
-const customRender = () => {
-  const queryClient = new QueryClient();
-  return render(
-    <QueryClientProvider client={queryClient}>
-      <ResourceProvider>
-        <FavoritesProvider>
-          <HomeScreen />
-        </FavoritesProvider>
-      </ResourceProvider>
-    </QueryClientProvider>,
-  );
-};
+// Mock useFavoritesContext (favorites logic mocked out)
+jest.mock("@/context/FavoritesContext", () => ({
+  useFavoritesContext: jest.fn(() => ({
+    favorites: [],
+    addFavorite: jest.fn(),
+    removeFavorite: jest.fn(),
+  })),
+}));
 
 describe("HomeScreen", () => {
-  it("should render HomeScreen heading and search bar ", async () => {
-    customRender();
+  it("should render HomeScreen heading and search bar ", () => {
+    render(<HomeScreen />);
 
     expect(
       screen.getByRole("header", { name: /spanish learning hub/i }),
     ).toBeOnTheScreen();
 
-    expect(screen.getByPlaceholderText(/search resources.../i)).toBeTruthy();
+    expect(
+      screen.getByPlaceholderText(/search resources.../i),
+    ).toBeOnTheScreen();
   });
 
   it("should render resources data and filter them by search", () => {
-    customRender();
+    const mockQuery = "grammar";
+    render(<HomeScreen />);
 
     mockData.forEach((resource) => {
-      expect(screen.getByText(resource.title)).toBeOnTheScreen();
+      expect(screen.queryByText(resource.title)).toBeOnTheScreen();
     });
 
     // Simulate a search query
     fireEvent.changeText(
-      screen.getByPlaceholderText(/search resources.../i),
-      "grammar",
+      screen.getByPlaceholderText(/Search resources.../i),
+      mockQuery,
     );
 
     // Check if the rendered data is filtered
     mockData.forEach((resource) => {
-      expect(screen.getByText(resource.title)).toBeOnTheScreen();
+      if (
+        resource.title.toLowerCase().includes(mockQuery.toLowerCase()) ||
+        resource.group.toLowerCase().includes(mockQuery.toLowerCase()) ||
+        resource.description.toLowerCase().includes(mockQuery.toLowerCase())
+      ) {
+        expect(screen.getByText(resource.title)).toBeOnTheScreen();
+      } else {
+        expect(screen.queryByText(resource.title)).not.toBeOnTheScreen();
+      }
     });
   });
 });
