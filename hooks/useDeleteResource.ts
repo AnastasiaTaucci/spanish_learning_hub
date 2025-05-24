@@ -5,22 +5,22 @@ import { supabase } from "@/utils/supabase";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function useDeleteResource() {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: async (resourceId: Resource['id']) => {
-            const { error } = await supabase
-                .from("resources")
-                .delete()
-                .eq('id', resourceId);
-            if (error) {
-                throw new Error(error.message)
-            }
-        },
-        onSuccess: () => {
-            // You tell React Query: "Refresh the cached data for 'resources'".
-            // This makes your app show the latest list (with the new resource added).
-            queryClient.invalidateQueries({ queryKey: ['resources']})
-        }
-    })
+  return useMutation({
+    mutationFn: async (resourceId: Resource["id"]) => {
+      const { error } = await supabase
+        .from("resources")
+        .delete()
+        .eq("id", resourceId);
+      if (error) {
+        throw new Error(error.message);
+      }
+    },
+    onSuccess: () => {
+      // You tell React Query: "Refresh the cached data for 'resources'".
+      // This makes your app show the latest list (with the new resource added).
+      queryClient.invalidateQueries({ queryKey: ["resources"] });
+    },
+  });
 }

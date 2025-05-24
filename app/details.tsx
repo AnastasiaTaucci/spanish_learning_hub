@@ -1,9 +1,15 @@
 // app/details.tsx
-import { View, Text, StyleSheet, Linking, TouchableOpacity } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useResourceContext } from '@/context/ResourcesContext';
-import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
-import { EditIcon, TrashIcon } from '@/components/ui/icon';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Linking,
+  TouchableOpacity,
+} from "react-native";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useResourceContext } from "@/context/ResourcesContext";
+import { Button, ButtonIcon, ButtonText } from "@/components/ui/button";
+import { EditIcon, TrashIcon } from "@/components/ui/icon";
 
 export default function DetailsScreen() {
   const router = useRouter();
@@ -13,8 +19,7 @@ export default function DetailsScreen() {
 
   const { resources, deleteResource } = useResourceContext();
 
-  const resource = resources.find((item) => item.id === id) // resource might be undefined if there is no match
-
+  const resource = resources.find((item) => item.id === id); // resource might be undefined if there is no match
 
   const handleDeleteResource = () => {
     deleteResource(id);
@@ -26,11 +31,11 @@ export default function DetailsScreen() {
   const handleEditResource = () => {
     // Navigate to the edit screen with the restaurant id
     router.push({
-      pathname: '/addResource',
-      params: { 
+      pathname: "/addResource",
+      params: {
         id,
-       },
-    })
+      },
+    });
   };
 
   return (
@@ -42,28 +47,32 @@ export default function DetailsScreen() {
       <Text style={styles.group}>Category: {resource?.group}</Text>
       <Text style={styles.description}>{resource?.description}</Text>
 
-      <TouchableOpacity style={[styles.button, styles.openButton]} onPress={() => Linking.openURL(String(resource?.link)) }>
-        <Text style={[styles.buttonText, styles.openButtonText]}>Open Resource</Text>
+      <TouchableOpacity
+        style={[styles.button, styles.openButton]}
+        onPress={() => Linking.openURL(String(resource?.link))}
+      >
+        <Text style={[styles.buttonText, styles.openButtonText]}>
+          Open Resource
+        </Text>
       </TouchableOpacity>
 
-      <Button 
-        style={[styles.button, { backgroundColor: 'grey' }]}
+      <Button
+        style={[styles.button, { backgroundColor: "grey" }]}
         action="positive"
-        onPress={ handleEditResource }
+        onPress={handleEditResource}
       >
-        <ButtonIcon as={EditIcon}/>
+        <ButtonIcon as={EditIcon} />
         <ButtonText>Edit</ButtonText>
       </Button>
 
-      <Button 
-        style={[styles.button, { backgroundColor: '#c20622' }]}
+      <Button
+        style={[styles.button, { backgroundColor: "#c20622" }]}
         action="positive"
-        onPress={ handleDeleteResource }
+        onPress={handleDeleteResource}
       >
-        <ButtonIcon as={TrashIcon}/>
+        <ButtonIcon as={TrashIcon} />
         <ButtonText>Delete</ButtonText>
       </Button>
-
     </View>
   );
 }
@@ -72,61 +81,61 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    justifyContent: 'center',
-    backgroundColor: '#f9f9f9',
+    justifyContent: "center",
+    backgroundColor: "#f9f9f9",
   },
   title: {
     fontSize: 30,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 8,
-    color: '#0362fc',
+    color: "#0362fc",
   },
   group: {
     fontSize: 16,
     marginBottom: 12,
-    color: '#888',
+    color: "#888",
   },
   description: {
     fontSize: 18,
     marginBottom: 20,
-    color: '#333',
+    color: "#333",
   },
   backButton: {
-    position: 'absolute',
+    position: "absolute",
     top: 40,
     left: 20,
     zIndex: 1,
     padding: 8,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: "#e0e0e0",
     borderRadius: 8,
   },
   backText: {
     fontSize: 16,
-    color: '#333',
+    color: "#333",
   },
   button: {
-    width: '40%',
-    marginHorizontal: 'auto',
+    width: "40%",
+    marginHorizontal: "auto",
     borderRadius: 8,
     marginTop: 12,
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   openButton: {
-    width: '75%',
+    width: "75%",
     marginBottom: 30,
-    marginHorizontal: 'auto',
-    backgroundColor: '#0362fc',
+    marginHorizontal: "auto",
+    backgroundColor: "#0362fc",
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,
     marginTop: 12,
-    alignItems: 'center',
+    alignItems: "center",
   },
   openButtonText: {
     fontSize: 20,
-  }
+  },
 });
