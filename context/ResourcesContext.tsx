@@ -58,7 +58,7 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({
           setResources(storageResources);
         }
       } catch (error) {
-        console.error("Failed to load cached resources", error);
+        // console.error("Failed to load cached resources", error);
       }
     };
 
@@ -71,7 +71,7 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({
       // console.log("Fetched resources: ", data);
 
       // first we update state with fresh data
-      console.log("Resources are succesfully fetched.");
+      //console.log("Resources are succesfully fetched.");
       setResources(data as Resource[]);
 
       // save the fresh data to the local storage
@@ -80,11 +80,8 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({
         const jsonValue = JSON.stringify(lastFive);
         AsyncStorage.setItem("RecentResources", jsonValue);
       } catch (error) {
-        console.error("Failed to cache resources", error);
+        // console.error("Failed to cache resources", error);
       }
-    }
-    if (isFetching) {
-      console.log("Fetching resources...");
     }
   }, [data, isFetching]);
 
