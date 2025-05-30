@@ -73,7 +73,7 @@ export default function HomeScreen() {
                 description={item.description}
                 onPress={() =>
                   router.push({
-                    pathname: "/details",
+                    pathname: "/[id]",
                     params: item,
                   })
                 }

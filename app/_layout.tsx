@@ -46,13 +46,8 @@ export default function RootLayout() {
         <GluestackUIProvider mode="light">
           <ResourceProvider>
             <FavoritesProvider>
-              <Stack>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                <Stack.Screen name="details" options={{ headerShown: false }} />
-                <Stack.Screen
-                  name="addResource"
-                  options={{ headerShown: false }}
-                />
+              <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="(tabs)" />
                 <Stack.Screen name="+not-found" />
               </Stack>
             </FavoritesProvider>
