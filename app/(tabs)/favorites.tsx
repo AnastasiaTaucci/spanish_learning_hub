@@ -35,7 +35,7 @@ export default function FavoritesScreen() {
               remove={() => removeFavorite(item.id)}
               onPress={() =>
                 router.push({
-                  pathname: "/details",
+                  pathname: "/[id]",
                   params: item,
                 })
               }
