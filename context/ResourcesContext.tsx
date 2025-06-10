@@ -58,7 +58,7 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({
           setResources(storageResources);
         }
       } catch (error) {
-        // console.error("Failed to load cached resources", error);
+        console.error("Failed to load cached resources", error);
       }
     };
 

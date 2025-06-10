@@ -43,7 +43,7 @@ export default function RootLayout() {
   return (
     <PaperProvider>
       <QueryClientProvider client={queryClient}>
-        <GluestackUIProvider mode="light">
+        <GluestackUIProvider>
           <ResourceProvider>
             <FavoritesProvider>
               <Stack screenOptions={{ headerShown: false }}>
