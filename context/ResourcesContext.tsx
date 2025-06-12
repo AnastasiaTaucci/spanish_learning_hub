@@ -21,9 +21,8 @@ type ResourceContextType = {
   updateResource: (updatedResource: Resource) => void;
 };
 
-const ResourceContext = createContext
-
-<ResourceContextType | undefined>(
+const ResourceContext = 
+createContext<ResourceContextType | undefined>(
   undefined,
 );
 
