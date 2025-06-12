@@ -21,7 +21,9 @@ type ResourceContextType = {
   updateResource: (updatedResource: Resource) => void;
 };
 
-const ResourceContext = createContext<ResourceContextType | undefined>(
+const ResourceContext = createContext
+
+<ResourceContextType | undefined>(
   undefined,
 );
 
@@ -61,6 +63,7 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({
         console.error("Failed to load cached resources", error);
       }
     };
+    
 
     fetchData();
   }, []);
@@ -80,7 +83,7 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({
         const jsonValue = JSON.stringify(lastFive);
         AsyncStorage.setItem("RecentResources", jsonValue);
       } catch (error) {
-        // console.error("Failed to cache resources", error);
+        console.error("Failed to cache resources", error);
       }
     }
   }, [data, isFetching]);
