@@ -21,8 +21,7 @@ type ResourceContextType = {
   updateResource: (updatedResource: Resource) => void;
 };
 
-const ResourceContext = 
-createContext<ResourceContextType | undefined>(
+const ResourceContext = createContext<ResourceContextType | undefined>(
   undefined,
 );
 
@@ -62,7 +61,6 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({
         console.error("Failed to load cached resources", error);
       }
     };
-    
 
     fetchData();
   }, []);
