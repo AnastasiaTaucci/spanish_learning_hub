@@ -39,7 +39,7 @@ export default function ResourceCard({
         ) : (
           <Pressable onPress={onToggleFavorite} hitSlop={25}>
             <AntDesign
-              name={isFavorite ? "heart" : "hearto"}
+              name={isFavorite ? "heart" : "heart"}
               size={26}
               color={isFavorite ? "#c20622" : "#888"}
             />

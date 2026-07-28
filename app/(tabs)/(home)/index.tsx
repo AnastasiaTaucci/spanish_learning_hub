@@ -62,7 +62,7 @@ export default function HomeScreen() {
         <FlatList
           style={{ paddingTop: 10 }}
           data={filteredData}
-          keyExtractor={(item) => item.title}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
             const isFavorite = favorites.includes(item.id);
 

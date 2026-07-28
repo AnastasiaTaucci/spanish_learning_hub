@@ -19,7 +19,7 @@ export default function useDeleteResource() {
     },
     onSuccess: () => {
       // You tell React Query: "Refresh the cached data for 'resources'".
-      // This makes your app show the latest list (with the new resource added).
+      // This makes the app show the latest list (with the new resource added).
       queryClient.invalidateQueries({ queryKey: ["resources"] });
     },
   });
