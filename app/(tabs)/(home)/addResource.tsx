@@ -21,7 +21,7 @@ const categories = [
   "Listening",
   "Reading",
   "Youtube Channel",
-  "Padcast",
+  "Po,dcast",
   "Netflix",
 ];
 
@@ -184,7 +184,7 @@ export default function AddResource() {
                       onChangeText={handleChange("description")}
                       onBlur={handleBlur("description")}
                       value={values.description}
-                      placeholder="Enter resource name"
+                      placeholder="Enter a short description"
                     />
                   </Input>
                   {touched.description && errors.description && (
@@ -202,7 +202,7 @@ export default function AddResource() {
                       onChangeText={handleChange("link")}
                       onBlur={handleBlur("link")}
                       value={values.link}
-                      placeholder="Enter resource name"
+                      placeholder="Enter resource link"
                     />
                   </Input>
                   {touched.link && errors.link && (

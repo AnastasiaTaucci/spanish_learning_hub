@@ -1,128 +1,146 @@
-# Spanish Learning Hub 📚🇪🇸
+# Spanish Learning Hub
 
-## Overview  
-Spanish Learning Hub is a full-stack mobile app built with React Native (Expo), designed to help users track and manage learning resources such as grammar guides, vocabulary tools, YouTube channels, and more.
+## Overview
 
-This project was developed as part of a mobile app development course to practice building cross-platform apps with React Native, including fundamentals like routing, component design, data handling, and backend integration using Supabase, React Query, and AsyncStorage.
+Spanish Learning Hub is a React Native mobile app built with Expo to help users organize Spanish learning resources in one place. Users can browse resources, search by keyword, save favorites, open resource links, and add, edit, or delete custom resources.
 
-## 🔧 Tech Stack
-- React Native + Expo Router (mobile app & navigation)
+This project was developed as part of a mobile app development course to practice building cross-platform apps with React Native, Expo Router, reusable components, shared app state, backend integration, local caching, testing, and code quality tools.
 
-- Supabase (cloud database and authentication)
+## Features
 
-- React Query (data fetching & caching)
+- Browse Spanish learning resources stored in Supabase
+- Search resources by title, category, or description
+- View resource details and open external links
+- Add new learning resources
+- Edit existing resources
+- Delete resources
+- Save and remove favorite resources
+- View favorite resources in a separate tab
+- Cache recent resources and favorites locally with AsyncStorage
+- Use React Query to refresh resource and favorite data after changes
+- Navigate between tabs, detail screens, and forms using Expo Router
+- Validate add/edit resource forms with Formik and Yup
 
-- AsyncStorage (local storage for offline access)
+## Tech Stack
 
-- Formik + Yup (form validation)
+- React Native
+- Expo
+- Expo Router
+- TypeScript
+- Supabase
+- React Query / TanStack Query
+- AsyncStorage
+- React Context
+- Formik
+- Yup
+- Gluestack UI
+- React Native Paper
+- Jest
+- ESLint
+- Husky
 
-- Gluestack UI – for consistent component styling in parts of the UI
+## Data Management
 
-## ✨ Features
+The app uses Supabase as the backend database for resources and favorites.
 
-- Browse learning resources (stored in Supabase)
+React Query is used to fetch data, manage loading states, run create/update/delete mutations, and refresh cached queries after changes. React Context is used to expose shared resource and favorite data/actions across the app, so screens can access them without prop drilling.
 
-- Add, edit, and delete custom resources
+AsyncStorage is used to cache a limited set of recent resources and favorite data locally, allowing the app to display saved data quickly when it starts.
 
-- Mark favorites with a heart icon toggle
+## Testing and Code Quality
 
-- Filter/search resources by keyword
+- Used Jest to test selected app logic and support more reliable behavior during development.
+- Used ESLint to catch code issues and keep the codebase more consistent.
+- Used Husky to run development checks before commits.
 
-- Offline caching using AsyncStorage
+## Supabase Tables
 
-- Mobile-optimized, cross-platform layout
+### `resources`
 
+| Column | Type | Description |
+|---|---|---|
+| `id` | UUID | Unique resource ID |
+| `title` | Text | Resource title |
+| `group` | Text | Resource category |
+| `description` | Text | Short resource description |
+| `link` | Text | External resource link |
 
-## 🚀 Getting Started
+### `favorites`
+
+| Column | Type | Description |
+|---|---|---|
+| `id` | UUID | Unique favorite record ID |
+| `resource_id` | UUID | References the saved resource |
+
+## Project Structure
+
+```bash
+/app              # App routes and screens
+/context          # Resources and favorites context providers
+/hooks            # Custom React Query hooks
+/components       # Shared UI components
+/utils            # Supabase and jest setup and helper utilities
+```
+
+## Getting Started
 
 ### Prerequisites
 
 Make sure you have the following installed:
 
 - Node.js
+- Expo Go app on a mobile device, or an emulator/simulator
+- Expo tooling through `npx expo`
 
-- Expo CLI
+### Installation
 
-🔐 A Supabase account is not required to run this project.
-The app uses a public Supabase project and test user credentials embedded in the code for demo purposes.
-You can optionally create your own Supabase account and replace the keys and login credentials (in RootLayout) if you prefer a private setup.
+1. Clone the repository:
 
-
-## Installation
-
-1. Clone the repo:
-
-   ```bash
-   git clone https://github.com/AnastasiaTaucci/spanish_learning_hub.git
-   cd spanish-learn-hub
+```bash
+git clone https://github.com/AnastasiaTaucci/spanish_learning_hub.git
+cd spanish_learning_hub
+```
 
 2. Install dependencies:
 
-   ```bash
-   npm install
+```bash
+npm install
+```
 
-3. Start the Expo app:
+3. Start the Expo development server:
 
-   ```bash
-   npx expo start
-   
-## 🛠 Supabase Configuration & Table Setup
+```bash
+npx expo start
+```
 
-A single test user is automatically signed in on app launch (test@example.com). Supabase is used as the cloud backend to store resources and favorites.
+4. Open the app:
 
-### Tables
+- Scan the QR code with Expo Go on your phone, or
+- Run the app in an emulator/simulator.
 
-#### 1. `resources`
+## Configuration Note
 
-| Column       | Type           | Description            |
-|--------------|----------------|------------------------|
-| `id`         | UUID (PK)      | Unique resource ID     |
-| `title`      | Text           | Resource title         |
-| `group`      | Text           | Category or group name |
-| `description`| Text           | Brief description      |
-| `link`       | Text           | Resource link          |
+This project uses Supabase for backend data.
 
----
+To run it with your own backend, create a Supabase project, add the required `resources` and `favorites` tables, and update the Supabase configuration in the project.
 
-#### 2. `favorites`
+The current version was built as a course/demo project and uses a development Supabase setup.
 
-| Column        | Type           | Description                              |
-|---------------|----------------|------------------------------------------|
-| `id`          | UUID (PK)      | Unique favorite record ID                |
-| `resource_id` | UUID (FK)      | References `resources.id` (the resource) |
+## Skills Demonstrated
 
-
-#### RLS Policies
-
-Row-level security (RLS) is enabled. Policies are currently permissive for development and testing purposes: USING (true)
-
-## ⚙️ React Query is used to:
-
-- Fetch resource and favorite data from Supabase
-
-- Handle loading and error states automatically
-
-- Invalidate and refetch data on add, edit, or delete
-
-- Provide optimistic UI updates when managing favorites
-
-
-## 📦 AsyncStorage is used for offline support:
-
-- A limited set of resources (e.g., the last 5 added) and full favorite items are cached locally using AsyncStorage.
-
-- On app startup, cached data is loaded first for instant display
-
-- When new data is fetched from Supabase, it overwrites the cache
-
-This makes the app usable even without a network connection.
-
-
-## 📁 Project Structure Highlights
-
-   ```bash
-   /app              → App routes & screens
-   /context          → Favorites and Resources context providers
-   /hooks            → Custom React Query hooks
-   /components       → Shared UI components (cards, inputs, icons)
-
+- React Native mobile development
+- Expo Router navigation
+- TypeScript
+- Supabase backend integration
+- CRUD functionality
+- React Query / TanStack Query
+- React Context for shared app state
+- AsyncStorage local caching
+- Form handling with Formik
+- Validation with Yup
+- Search and filtering
+- Tab and stack navigation
+- Reusable component structure
+- Unit testing with Jest
+- Code quality checks with ESLint
+- Git workflow automation with Husky
