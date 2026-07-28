@@ -4,6 +4,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  View
 } from "react-native";
 import React, { useState } from "react";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
@@ -13,7 +14,6 @@ import { useResourceContext } from "@/context/ResourcesContext";
 import { Box } from "@/components/ui/box";
 import { Input, InputField } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
-import { Menu, Button } from "react-native-paper";
 
 const categories = [
   "Grammar",
@@ -21,7 +21,7 @@ const categories = [
   "Listening",
   "Reading",
   "Youtube Channel",
-  "Po,dcast",
+  "Podcast",
   "Netflix",
 ];
 
@@ -137,34 +137,38 @@ export default function AddResource() {
                   <Text size="xl" className="mt-2 text-stone-900">
                     Category
                   </Text>
-                  <Menu
-                    visible={menuVisible}
-                    onDismiss={() => setMenuVisible(false)}
-                    anchor={
-                      <Button
-                        mode="outlined"
-                        onPress={() => setMenuVisible(true)}
-                        style={styles.category}
-                        labelStyle={[
-                          styles.categoryLabel,
-                          { color: values.group ? "#000" : "#888" },
-                        ]}
-                      >
-                        {values.group || "Select Category"}
-                      </Button>
-                    }
+                  <TouchableOpacity
+                    style={styles.category}
+                    onPress={() => setMenuVisible((prev) => !prev)}
                   >
-                    {categories.map((label) => (
-                      <Menu.Item
-                        key={label}
-                        onPress={() => {
-                          handleChange("group")(label);
-                          setMenuVisible(false);
-                        }}
-                        title={label}
-                      />
-                    ))}
-                  </Menu>
+                    <Text
+                      style={[
+                        styles.categoryLabel,
+                        { color: values.group ? "#000" : "#888" },
+                      ]}
+                    >
+                      {values.group || "Select Category"}
+                    </Text>
+                  </TouchableOpacity>
+
+                  {menuVisible && (
+                    <View style={styles.dropdown}>
+                      <ScrollView nestedScrollEnabled={true}>
+                        {categories.map((label) => (
+                          <TouchableOpacity
+                            key={label}
+                            style={styles.dropdownItem}
+                            onPress={() => {
+                              handleChange("group")(label);
+                              setMenuVisible(false);
+                            }}
+                          >
+                            <Text style={styles.dropdownItemText}>{label}</Text>
+                          </TouchableOpacity>
+                        ))}
+                      </ScrollView>
+                    </View>
+                  )}
                   {touched.group && errors.group && (
                     <Text size="sm" className="text-red-500 mt-1">
                       {errors.group}
@@ -277,5 +281,26 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "600",
+  },
+  dropdown: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    marginTop: 4,
+    maxHeight: 180,
+    overflow: "hidden",
+  },
+
+  dropdownItem: {
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
+  },
+
+  dropdownItemText: {
+    fontSize: 16,
+    color: "#333",
   },
 });
