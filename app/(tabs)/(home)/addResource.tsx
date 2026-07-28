@@ -4,7 +4,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  View
+  View,
 } from "react-native";
 import React, { useState } from "react";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
