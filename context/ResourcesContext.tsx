@@ -54,7 +54,7 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({
         const storageResources =
           jsonValue != null ? JSON.parse(jsonValue) : null;
 
-        if (storageResources && storageResources.length) {
+        if (storageResources && storageResources.length > 0) {
           setResources(storageResources);
         }
       } catch (error) {
@@ -76,7 +76,7 @@ export const ResourceProvider: React.FC<{ children: React.ReactNode }> = ({
 
       // save the fresh data to the local storage
       try {
-        const lastFive = data.slice(-5);
+        const lastFive = data.slice(0, 5);
         const jsonValue = JSON.stringify(lastFive);
         AsyncStorage.setItem("RecentResources", jsonValue);
       } catch (error) {
